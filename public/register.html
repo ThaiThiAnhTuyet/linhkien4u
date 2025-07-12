@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng ký | linhkien4u</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen py-10">
+
+  <div class="w-full max-w-sm bg-white p-8 rounded-xl shadow-lg">
+    <a href="index.html" class="text-3xl font-bold text-center block mb-6 text-blue-700">linhkien4u</a>
+    <h2 class="text-xl font-semibold text-center text-gray-700 mb-6">Tạo tài khoản mới</h2>
+    
+    <form id="register-form" class="space-y-4">
+      <div>
+        <label for="fullname" class="block text-sm font-medium text-gray-700">Họ và tên</label>
+        <input type="text" id="fullname" required class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+        <input type="email" id="email" required class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div>
+        <label for="password" class="block text-sm font-medium text-gray-700">Mật khẩu</label>
+        <input type="password" id="password" required class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" title="Phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt.">
+        <p id="password-strength" class="text-xs mt-1 min-h-[16px]"></p>
+      </div>
+      <div>
+        <label for="confirm-password" class="block text-sm font-medium text-gray-700">Xác nhận mật khẩu</label>
+        <input type="password" id="confirm-password" required class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      
+      <div>
+          <label for="admin-code" class="block text-sm font-medium text-gray-700">Mã đăng ký Admin (Tùy chọn)</label>
+          <input type="text" id="admin-code" placeholder="Bỏ trống nếu là khách hàng" class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+
+      <button type="submit" class="w-full bg-blue-600 text-white px-6 py-2.5 rounded-md hover:bg-blue-700 transition font-semibold">Đăng ký</button>
+      <p id="error-message" class="text-red-500 text-sm text-center min-h-[20px]"></p>
+      <p class="text-center text-sm text-gray-600">Đã có tài khoản? <a href="login.html" class="font-medium text-blue-600 hover:underline">Đăng nhập ngay</a></p>
+    </form>
+  </div>
+
+  <script>
+    const passwordInput = document.getElementById('password');
+    const passwordStrength = document.getElementById('password-strength');
+
+    passwordInput.addEventListener('input', function() {
+        const pass = this.value;
+        let strength = 0;
+        if (pass.length >= 8) strength++;
+        if (pass.match(/[a-z]/)) strength++;
+        if (pass.match(/[A-Z]/)) strength++;
+        if (pass.match(/[0-9]/)) strength++;
+        if (pass.match(/[^a-zA-Z0-9]/)) strength++;
+
+        switch (strength) {
+            case 0: case 1: case 2:
+                passwordStrength.textContent = 'Mật khẩu yếu'; passwordStrength.style.color = 'red'; break;
+            case 3:
+                passwordStrength.textContent = 'Mật khẩu trung bình'; passwordStrength.style.color = 'orange'; break;
+            case 4: case 5:
+                passwordStrength.textContent = 'Mật khẩu mạnh'; passwordStrength.style.color = 'green'; break;
+            default: passwordStrength.textContent = '';
+        }
+    });
+
+    document.getElementById('register-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const fullnameInput = document.getElementById('fullname');
+      const emailInput = document.getElementById('email');
+      const passwordInput = document.getElementById('password');
+      const confirmPasswordInput = document.getElementById('confirm-password');
+      const adminCodeInput = document.getElementById('admin-code');
+      const errorMessage = document.getElementById('error-message');
+
+      const fullname = fullnameInput.value.trim();
+      const email = emailInput.value.trim().toLowerCase();
+      const password = passwordInput.value;
+      const confirmPassword = confirmPasswordInput.value;
+      const adminCode = adminCodeInput.value.trim();
+      
+      const ADMIN_SECRET_CODE = "linhkien4u-admin-2025";
+      errorMessage.textContent = '';
+
+      if (!fullname || !email || !password || !confirmPassword) {
+          errorMessage.textContent = 'Vui lòng điền đầy đủ các trường bắt buộc.';
+          return;
+      }
+      
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+          errorMessage.textContent = 'Định dạng email không hợp lệ.';
+          return;
+      }
+
+      if (password !== confirmPassword) {
+          errorMessage.textContent = 'Mật khẩu và xác nhận mật khẩu không khớp.';
+          return;
+      }
+      
+      // *** SỬA LỖI & NÂNG CẤP Ở ĐÂY: Logic kiểm tra mật khẩu ***
+      const isAdminRegistration = (adminCode === ADMIN_SECRET_CODE);
+      
+      // Áp dụng quy tắc cho người dùng thường, có thể nới lỏng cho admin nếu muốn
+      if (!isAdminRegistration) {
+          if (password.length < 8) {
+              errorMessage.textContent = 'Mật khẩu phải có ít nhất 8 ký tự.';
+              return;
+          }
+          if (!/[A-Z]/.test(password)) {
+              errorMessage.textContent = 'Mật khẩu phải chứa ít nhất một chữ hoa (A-Z).';
+              return;
+          }
+          if (!/[a-z]/.test(password)) {
+              errorMessage.textContent = 'Mật khẩu phải chứa ít nhất một chữ thường (a-z).';
+              return;
+          }
+          if (!/[0-9]/.test(password)) {
+              errorMessage.textContent = 'Mật khẩu phải chứa ít nhất một chữ số (0-9).';
+              return;
+          }
+          if (!/[^a-zA-Z0-9]/.test(password)) {
+              errorMessage.textContent = 'Mật khẩu phải chứa ít nhất một ký tự đặc biệt (!, @, #, $, ...).';
+              return;
+          }
+      }
+
+      const users = JSON.parse(localStorage.getItem('users')) || [];
+      const emailExists = users.some(user => user.email === email);
+
+      if (emailExists) {
+          errorMessage.textContent = 'Email này đã được đăng ký. Vui lòng sử dụng email khác.';
+          return;
+      }
+
+      const newUser = {
+          id: `user-${Date.now()}`,
+          fullname: fullname,
+          email: email,
+          password: password,
+          role: isAdminRegistration ? 'admin' : 'user',
+          status: 'active'
+      };
+
+      users.push(newUser);
+      localStorage.setItem('users', JSON.stringify(users));
+
+      alert(`Đăng ký tài khoản ${newUser.role === 'admin' ? 'ADMIN' : ''} thành công! Vui lòng đăng nhập.`);
+      window.location.href = 'login.html';
+    });
+  </script>
+
+</body>
+</html>

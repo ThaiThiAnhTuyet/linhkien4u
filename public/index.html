@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>linhkien4u - Linh kiện điện tử chính hãng</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Thêm Swiper.js -->
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  <style>
+    #cart-count {
+      position: absolute;
+      top: -8px;
+      right: -10px;
+      background-color: red;
+      color: white;
+      border-radius: 50%;
+      padding: 0px 6px;
+      font-size: 12px;
+      font-weight: bold;
+      border: 2px solid #111827; /* Màu nền header */
+      display: none; /* Ẩn đi khi không có sản phẩm */
+    }
+    .group:hover .group-hover\:block {
+        display: block;
+    }
+    /* CSS cho sao đánh giá và slider */
+    .review-stars .star { color: #f59e0b; }
+    .review-stars .star-empty { color: #d1d5db; }
+    .swiper-button-next, .swiper-button-prev {
+        color: #2563eb;
+        transform: scale(0.7);
+    }
+    .swiper-pagination-bullet-active {
+        background-color: #2563eb;
+    }
+  </style>
+</head>
+<body class="bg-white text-gray-800">
+
+  <header class="bg-gray-900 text-white sticky top-0 z-50 shadow">
+    <!-- Thanh chào mừng -->
+    <div id="user-greeting-bar" class="hidden bg-gray-800">
+      <div class="max-w-7xl mx-auto px-4 py-2 text-center">
+        <span id="greeting-text" class="text-sm font-medium text-green-400"></span>
+      </div>
+    </div>
+
+    <!-- Header chính -->
+    <div class="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center">
+      <a href="index.html" class="text-2xl font-bold">linhkien4u</a>
+      <div id="desktop-menu-container" class="hidden md:flex items-center gap-6">
+        <form action="product.html" method="GET" class="relative">
+          <input type="text" name="q" placeholder="Tìm sản phẩm..." required class="w-60 pl-10 pr-4 py-2 rounded-full text-sm text-black border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <svg class="h-4 w-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.9 14.32a8 8 0 111.414-1.414l4.387 4.387a1 1 0 01-1.414 1.414l-4.387-4.387zM8 14a6 6 0 100-12 6 6 0 000 12z" clip-rule="evenodd" /></svg>
+          </div>
+        </form>
+
+        <nav class="flex items-center gap-4 text-sm">
+          <div class="relative group py-2">
+            <a href="product.html" class="hover:text-yellow-400 transition flex items-center gap-1">Sản phẩm <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg></a>
+            <div id="dropdown-container" class="absolute left-0 top-full pt-2 -mt-px bg-transparent hidden group-hover:block z-50">
+                <ul id="dropdown-menu-desktop" class="bg-white text-black rounded-md shadow-lg min-w-[240px]">
+                    <!-- JS sẽ điền menu vào đây -->
+                </ul>
+            </div>
+          </div>
+          <a href="about.html" class="hover:text-yellow-400 transition py-2">Giới thiệu</a>
+          <a href="cart.html" class="relative hover:text-yellow-400 transition flex items-center gap-2 py-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <span id="cart-count">0</span>
+          </a>
+          <a href="reviews.html" class="hover:text-yellow-400 transition py-2">Đánh giá</a>
+          <a href="contact.html" class="hover:text-yellow-400 transition py-2">Liên hệ</a>
+          <a href="my-orders.html" id="orders-link" class="hover:text-yellow-400 transition py-2 hidden">Đơn hàng</a>
+          <div id="auth-section-desktop" class="flex items-center gap-4"></div>
+        </nav>
+      </div>
+      <button id="menu-toggle" class="md:hidden text-white text-2xl focus:outline-none">☰</button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden px-4 pt-2 pb-4 space-y-3"></div>
+  </header>
+  
+  <section class="w-full bg-gradient-to-r from-white via-gray-50 to-white py-8 md:py-12">
+    <div class="max-w-7xl mx-auto flex flex-col-reverse md:flex-row items-center gap-8 px-4 md:px-8">
+      <div class="w-full md:w-2/5 space-y-4 text-center md:text-left">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-blue-700 leading-snug">Giải pháp linh kiện toàn diện cho mọi kỹ thuật viên</h2>
+        <p class="text-base text-gray-700">Cung cấp IC, vi điều khiển, module kết nối, điện trở, tụ điện... Phù hợp cho sửa chữa, sáng chế và giảng dạy kỹ thuật.</p>
+        <ul class="text-sm text-gray-600 space-y-1"><li>✔️ 100% chính hãng, kiểm định nghiêm ngặt</li><li>✔️ Giao hàng nhanh, hỗ trợ kỹ thuật tận tâm</li><li>✔️ Giá cả cạnh tranh – Bảo hành rõ ràng</li></ul>
+        <div class="flex justify-center md:justify-start gap-4 pt-2">
+          <a href="product.html" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full font-semibold shadow transition hover:scale-105">Xem sản phẩm</a>
+          <a href="contact.html" class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-full font-semibold shadow transition hover:scale-105">Liên hệ</a>
+        </div>
+      </div>
+      <div class="w-full md:w-3/5 relative h-[260px] md:h-[360px] rounded-xl overflow-hidden shadow-xl">
+        <img id="heroImage" src="./images/Banner/banner1.png" alt="Banner linh kiện điện tử" class="w-full h-full object-cover transition-opacity duration-1000 ease-in-out rounded-xl" />
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Sản phẩm nổi bật</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="bg-gray-50 rounded-xl shadow hover:shadow-xl transition p-4 flex flex-col">
+          <a href="product-detail.html?id=PM200RSA060" class="block overflow-hidden rounded-lg mb-4"> <img src="./images/Product/SanPhamNoiBat/PM200RSA060.png" alt="PM200RSA060" class="w-full h-40 object-cover transform hover:scale-110 transition-transform duration-300 ease-in-out"> </a>
+          <div class="flex-grow"> <h3 class="text-lg font-semibold text-gray-800">PM200RSA060</h3> <p class="text-sm text-gray-500">IGBT Module 200A 600V</p> <p class="text-blue-600 font-bold mt-2">7.500.000đ</p> </div>
+          <div class="flex justify-between gap-2 mt-4"> <a href="product-detail.html?id=PM200RSA060" class="flex-1 bg-green-600 text-white text-sm font-semibold text-center py-2 rounded-md hover:bg-green-700 transition flex items-center justify-center gap-1.5"> <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg> Chi tiết </a> <button onclick="addToCart({id: 'PM200RSA060', name: 'PM200RSA060', price: '7.500.000đ', img: './images/Product/SanPhamNoiBat/PM200RSA060.png'})" class="flex-1 bg-blue-600 text-white text-sm text-center py-2 rounded-md hover:bg-blue-700 transition">Thêm vào giỏ</button> </div>
+        </div>
+        <div class="bg-gray-50 rounded-xl shadow hover:shadow-xl transition p-4 flex flex-col">
+          <a href="product-detail.html?id=PM50CLA060" class="block overflow-hidden rounded-lg mb-4"> <img src="./images/Product/SanPhamNoiBat/PM50CLA060.png" alt="PM50CLA060" class="w-full h-40 object-cover transform hover:scale-110 transition-transform duration-300 ease-in-out"> </a>
+          <div class="flex-grow"> <h3 class="text-lg font-semibold text-gray-800">PM50CLA060</h3> <p class="text-sm text-gray-500">Power Module Mitsubishi</p> <p class="text-blue-600 font-bold mt-2">3.200.000đ</p> </div>
+          <div class="flex justify-between gap-2 mt-4"> <a href="product-detail.html?id=PM50CLA060" class="flex-1 bg-green-600 text-white text-sm font-semibold text-center py-2 rounded-md hover:bg-green-700 transition flex items-center justify-center gap-1.5"> <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg> Chi tiết </a> <button onclick="addToCart({id: 'PM50CLA060', name: 'PM50CLA060', price: '3.200.000đ', img: './images/Product/SanPhamNoiBat/PM50CLA060.png'})" class="flex-1 bg-blue-600 text-white text-sm text-center py-2 rounded-md hover:bg-blue-700 transition">Thêm vào giỏ</button> </div>
+        </div>
+        <div class="bg-gray-50 rounded-xl shadow hover:shadow-xl transition p-4 flex flex-col">
+          <a href="product-detail.html?id=HR911105A" class="block overflow-hidden rounded-lg mb-4"> <img src="./images/Product/SanPhamNoiBat/HR911105A.jpg" alt="HR911105A" class="w-full h-40 object-cover transform hover:scale-110 transition-transform duration-300 ease-in-out"> </a>
+          <div class="flex-grow"> <h3 class="text-lg font-semibold text-gray-800">HR911105A</h3> <p class="text-sm text-gray-500">Cổng mạng Ethernet RJ45</p> <p class="text-blue-600 font-bold mt-2">15.000đ</p> </div>
+          <div class="flex justify-between gap-2 mt-4"> <a href="product-detail.html?id=HR911105A" class="flex-1 bg-green-600 text-white text-sm font-semibold text-center py-2 rounded-md hover:bg-green-700 transition flex items-center justify-center gap-1.5"> <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg> Chi tiết </a> <button onclick="addToCart({id: 'HR911105A', name: 'HR911105A', price: '15.000đ', img: './images/Product/SanPhamNoiBat/HR911105A.jpg'})" class="flex-1 bg-blue-600 text-white text-sm text-center py-2 rounded-md hover:bg-blue-700 transition">Thêm vào giỏ</button> </div>
+        </div>
+        <div class="bg-gray-50 rounded-xl shadow hover:shadow-xl transition p-4 flex flex-col">
+          <a href="product-detail.html?id=FSBF10CH60B" class="block overflow-hidden rounded-lg mb-4"> <img src="./images/Product/SanPhamNoiBat/FSBF10CH60B.png" alt="FSBF10CH60B" class="w-full h-40 object-cover transform hover:scale-110 transition-transform duration-300 ease-in-out"> </a>
+          <div class="flex-grow"> <h3 class="text-lg font-semibold text-gray-800">FSBF10CH60B</h3> <p class="text-sm text-gray-500">IGBT tích hợp driver 600V</p> <p class="text-blue-600 font-bold mt-2">800.000đ</p> </div>
+          <div class="flex justify-between gap-2 mt-4"> <a href="product-detail.html?id=FSBF10CH60B" class="flex-1 bg-green-600 text-white text-sm font-semibold text-center py-2 rounded-md hover:bg-green-700 transition flex items-center justify-center gap-1.5"> <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg> Chi tiết </a> <button onclick="addToCart({id: 'FSBF10CH60B', name: 'FSBF10CH60B', price: '800.000đ', img: './images/Product/SanPhamNoiBat/FSBF10CH60B.png'})" class="flex-1 bg-blue-600 text-white text-sm text-center py-2 rounded-md hover:bg-blue-700 transition">Thêm vào giỏ</button> </div>
+        </div>
+        <div class="bg-gray-50 rounded-xl shadow hover:shadow-xl transition p-4 flex flex-col">
+          <a href="product-detail.html?id=DS18B20" class="block overflow-hidden rounded-lg mb-4"> <img src="./images/Product/SanPhamNoiBat/DS18B20.png" alt="DS18B20" class="w-full h-40 object-cover transform hover:scale-110 transition-transform duration-300 ease-in-out"> </a>
+          <div class="flex-grow"> <h3 class="text-lg font-semibold text-gray-800">DS18B20</h3> <p class="text-sm text-gray-500">Cảm biến nhiệt độ kỹ thuật số</p> <p class="text-blue-600 font-bold mt-2">26.000đ</p> </div>
+          <div class="flex justify-between gap-2 mt-4"> <a href="product-detail.html?id=DS18B20" class="flex-1 bg-green-600 text-white text-sm font-semibold text-center py-2 rounded-md hover:bg-green-700 transition flex items-center justify-center gap-1.5"> <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg> Chi tiết </a> <button onclick="addToCart({id: 'DS18B20', name: 'DS18B20', price: '26.000đ', img: './images/Product/SanPhamNoiBat/DS18B20.png'})" class="flex-1 bg-blue-600 text-white text-sm text-center py-2 rounded-md hover:bg-blue-700 transition">Thêm vào giỏ</button> </div>
+        </div>
+        
+        <div class="bg-gray-50 rounded-xl shadow hover:shadow-xl transition p-4 flex flex-col">
+            <a href="product-detail.html?id=LM317" class="block overflow-hidden rounded-lg mb-4"> 
+                <img src="./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/IC Nguồn/LM317.png" alt="IC ổn áp LM317" class="w-full h-40 object-cover transform hover:scale-110 transition-transform duration-300 ease-in-out">
+            </a>
+            <div class="flex-grow">
+                <h3 class="text-lg font-semibold text-gray-800">LM317</h3>
+                <p class="text-sm text-gray-500">IC Nguồn</p>
+                <p class="text-blue-600 font-bold mt-2">4.000đ</p>
+            </div>
+            <div class="flex justify-between gap-2 mt-4">
+                <a href="product-detail.html?id=LM317" class="flex-1 bg-green-600 text-white text-sm font-semibold text-center py-2 rounded-md hover:bg-green-700 transition flex items-center justify-center gap-1.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                    Chi tiết
+                </a>
+                <button onclick="addToCart({id: 'LM317', name: 'LM317', price: '4.000đ', img: './images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/IC Nguồn/LM317.png'})" class="flex-1 bg-blue-600 text-white text-sm text-center py-2 rounded-md hover:bg-blue-700 transition">Thêm vào giỏ</button>
+            </div>
+        </div>
+
+        <div class="bg-gray-50 rounded-xl shadow hover:shadow-xl transition p-4 flex flex-col">
+          <a href="product-detail.html?id=SKKT26/12D" class="block overflow-hidden rounded-lg mb-4"> <img src="./images/Product/SanPhamNoiBat/SKKT26_12D.jpg" alt="SKKT26/12D" class="w-full h-40 object-cover transform hover:scale-110 transition-transform duration-300 ease-in-out"> </a>
+          <div class="flex-grow"> <h3 class="text-lg font-semibold text-gray-800">SKKT26/12D</h3> <p class="text-sm text-gray-500">SCR Diode Module 1200V</p> <p class="text-blue-600 font-bold mt-2">490.000đ</p> </div>
+          <div class="flex justify-between gap-2 mt-4"> <a href="product-detail.html?id=SKKT26/12D" class="flex-1 bg-green-600 text-white text-sm font-semibold text-center py-2 rounded-md hover:bg-green-700 transition flex items-center justify-center gap-1.5"> <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg> Chi tiết </a> <button onclick="addToCart({id: 'SKKT26/12D', name: 'SKKT26/12D', price: '490.000đ', img: './images/Product/SanPhamNoiBat/SKKT26_12D.jpg'})" class="flex-1 bg-blue-600 text-white text-sm text-center py-2 rounded-md hover:bg-blue-700 transition">Thêm vào giỏ</button> </div>
+        </div>
+        <div class="bg-gray-50 rounded-xl shadow hover:shadow-xl transition p-4 flex flex-col">
+          <a href="product-detail.html?id=2SK2369" class="block overflow-hidden rounded-lg mb-4"> <img src="./images/Product/SanPhamNoiBat/2SK2369.jpg" alt="2SK2369" class="w-full h-40 object-cover transform hover:scale-110 transition-transform duration-300 ease-in-out"> </a>
+          <div class="flex-grow"> <h3 class="text-lg font-semibold text-gray-800">2SK2369</h3> <p class="text-sm text-gray-500">MOSFET 600V 3A</p> <p class="text-blue-600 font-bold mt-2">14.000đ</p> </div>
+          <div class="flex justify-between gap-2 mt-4"> <a href="product-detail.html?id=2SK2369" class="flex-1 bg-green-600 text-white text-sm font-semibold text-center py-2 rounded-md hover:bg-green-700 transition flex items-center justify-center gap-1.5"> <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg> Chi tiết </a> <button onclick="addToCart({id: '2SK2369', name: '2SK2369', price: '14.000đ', img: './images/Product/SanPhamNoiBat/2SK2369.jpg'})" class="flex-1 bg-blue-600 text-white text-sm text-center py-2 rounded-md hover:bg-blue-700 transition">Thêm vào giỏ</button> </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-gray-100 py-12 px-4"><div class="max-w-6xl mx-auto grid gap-8 sm:grid-cols-2 md:grid-cols-3 text-center"><div><span class="text-blue-600 text-4xl">🚚</span><h4 class="text-xl font-semibold mt-3">Giao hàng toàn quốc</h4><p class="text-gray-600 mt-1">Nhanh chóng, đúng hẹn, COD toàn quốc</p></div><div><span class="text-blue-600 text-4xl">🛠️</span><h4 class="text-xl font-semibold mt-3">Bảo hành rõ ràng</h4><p class="text-gray-600 mt-1">Từ 3 đến 12 tháng tùy sản phẩm</p></div><div><span class="text-blue-600 text-4xl">💬</span><h4 class="text-xl font-semibold mt-3">Tư vấn tận tâm</h4><p class="text-gray-600 mt-1">Hỗ trợ kỹ thuật, đổi trả linh hoạt</p></div></div></section>
+  
+  <footer class="bg-gray-900 text-white py-10"><div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-sm"><div><h4 class="text-base font-semibold mb-3 uppercase tracking-wide text-yellow-400">Về linhkien4u</h4><p class="text-gray-300 leading-relaxed">Cung cấp linh kiện điện tử chất lượng cao phục vụ sửa chữa, nghiên cứu và sản xuất. Cam kết chính hãng, hỗ trợ kỹ thuật tận tâm.</p></div><div><h4 class="text-base font-semibold mb-3 uppercase tracking-wide text-yellow-400">Liên hệ</h4><ul class="space-y-1 text-gray-300"><li><span class="font-medium text-white">Công ty:</span> TNHH.MTV TM DV BKITEC</li><li><span class="font-medium text-white">MST:</span> 0313009850</li><li><span class="font-medium text-white">Địa chỉ:</span> 42 Hồng Lạc, P.11, Q.Tân Bình, TP.HCM</li><li><span class="font-medium text-white">Hotline:</span> 08.3971.4641</li><li><span class="font-medium text-white">Email:</span><a href="mailto:info@linhkien4u.com" class="text-blue-400 hover:underline">info@linhkien4u.com</a></li><li><span class="font-medium text-white">Giờ làm việc:</span> 8:00 – 17:30 (Thứ 2 – Thứ 7)</li></ul></div><div><h4 class="text-base font-semibold mb-3 uppercase tracking-wide text-yellow-400">Bản đồ</h4><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.0996823187253!2d106.63822067587318!3d10.803435558721204!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752edb8fbd4329%3A0x3b8ed85f269dd622!2zNDIgxJAuIEjGsG5nIEzhuq9jLCBQaMaw4budbmcgMTEsIFTDom4gQsOsbmgsIFRow6BuaCBwaOG7kSBI4buTIENow60!5e0!3m2!1svi!2s!4v1719210000000!5m2!1svi!2s" width="100%" height="180" style="border:0; border-radius: 8px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div></div><div class="mt-8 text-center text-xs text-gray-500">© 2025 linhkien4u.com – All rights reserved.</div></footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // ===== BẮT ĐẦU VÙNG SỬA =====
+        const menuData = [
+            { title: "LINH KIỆN BÁN DẪN", sub: [ { name: "Transistor BJT", type: "transistor-bjt" }, { name: "MOSFET", type: "mosfet" }, { name: "IGBT", type: "igbt" } ] },
+            { title: "CẢM BIẾN", sub: [ { name: "Cảm biến nhiệt độ", type: "cam-bien-nhiet-do" }, { name: "Cảm biến chuyển động (PIR)", type: "cam-bien-pir" }, { name: "Cảm biến màu sắc", type: "cam-bien-mau-sac" } ] },
+            { title: "LINH KIỆN CÔNG SUẤT", sub: [ { name: "IC Nguồn", type: "ic-nguon" }, { name: "Module Công suất", type: "module-cong-suat" } ] },
+            { title: "BỘ NGUỒN (ADAPTER)", sub: [ { name: "Adapter", type: "adapter" } ] },
+            { title: "ĐIỆN TRỞ", sub: [ { name: "Resistors SMD 0603", type: "resistor-0603" }, { name: "Điện trở 3W", type: "resistor-3w" } ] },
+            { title: "TỤ ĐIỆN", sub: [ { name: "Tụ điện", type: "tu-dien" }, { name: "Tụ điện SMD", type: "tu-dien-smd" } ] },
+        ];
+        // ===== KẾT THÚC VÙNG SỬA =====
+
+        window.addToCart = function(product) {
+            const user = JSON.parse(localStorage.getItem('loggedInUser'));
+            if (!user || user.role !== 'user') {
+                if (confirm('Bạn cần đăng nhập để thêm sản phẩm vào giỏ. Chuyển đến trang đăng nhập?')) window.location.href = 'login.html';
+                return;
+            }
+            if (user.status === 'inactive') {
+                alert('Tài khoản của bạn đã bị khóa. Vui lòng liên hệ hỗ trợ.');
+                return; 
+            }
+            const userCartKey = `cart_${user.email}`;
+            let cart = JSON.parse(localStorage.getItem(userCartKey)) || [];
+            const existingItemIndex = cart.findIndex(item => item.id === product.id);
+            if (existingItemIndex > -1) {
+                cart[existingItemIndex].quantity += 1;
+                alert(`Đã tăng số lượng sản phẩm "${product.name}" trong giỏ hàng!`);
+            } else {
+                product.quantity = 1;
+                cart.push(product);
+                alert(`Đã thêm "${product.name}" vào giỏ hàng thành công!`);
+            }
+            localStorage.setItem(userCartKey, JSON.stringify(cart));
+            updateCartIconCount();
+        }
+
+        function updateCartIconCount() {
+            const user = JSON.parse(localStorage.getItem('loggedInUser'));
+            if (!user) {
+                document.querySelectorAll('#cart-count').forEach(el => el.style.display = 'none');
+                return;
+            }
+            const userCartKey = `cart_${user.email}`;
+            const cart = JSON.parse(localStorage.getItem(userCartKey)) || [];
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.querySelectorAll('#cart-count').forEach(el => {
+                el.style.display = totalItems > 0 ? 'inline-block' : 'none';
+                el.textContent = totalItems;
+            });
+        }
+
+        window.logout = function() {
+            if (confirm('Bạn có chắc chắn muốn đăng xuất?')) {
+                localStorage.removeItem('loggedInUser');
+                window.location.reload(); 
+            }
+        }
+        
+        function setupUI() {
+            const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+            
+            const dropdownMenuContainer = document.getElementById('dropdown-container');
+            if (dropdownMenuContainer) {
+                const dropdownMenuDesktop = dropdownMenuContainer.querySelector('#dropdown-menu-desktop');
+                if (dropdownMenuDesktop) {
+                    let menuHTML = menuData.map(category => `
+                        <li class="relative group/submenu border-b last:border-b-0">
+                            <a href="product.html?type=${category.sub[0].type}" class="w-full text-left px-4 py-3 hover:bg-gray-100 flex justify-between items-center">
+                                <span>${category.title}</span>
+                                <svg class="w-4 h-4 ml-2 transform group-hover/submenu:rotate-90 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                            </a>
+                            <ul class="absolute left-full -top-px mt-0 bg-white text-black rounded-r-md shadow-lg hidden group-hover/submenu:block w-64 z-50 border">
+                                ${category.sub.map(sub => `<li class="border-b last:border-b-0"><a href="product.html?type=${sub.type}" class="block px-4 py-3 hover:bg-gray-100">${sub.name}</a></li>`).join('')}
+                            </ul>
+                        </li>
+                    `).join('');
+                    dropdownMenuDesktop.innerHTML = menuHTML;
+                }
+            }
+
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuToggle = document.getElementById("menu-toggle");
+            const authSectionDesktop = document.getElementById('auth-section-desktop');
+            const ordersLink = document.getElementById('orders-link');
+            const wishlistLink = document.getElementById('wishlist-link');
+
+            let authHTMLDesktop = '';
+            let authHTMLMobile = '';
+            if (loggedInUser) {
+                if(ordersLink && loggedInUser.role === 'user') ordersLink.classList.remove('hidden');
+                if(wishlistLink && loggedInUser.role === 'user') wishlistLink.classList.remove('hidden');
+
+                const userMenuDropdown = `
+                  <div class="relative group py-2">
+                    <a href="profile.html" class="hover:text-yellow-400 transition flex items-center gap-1">
+                      Tài khoản
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                    </a>
+                    <div class="absolute right-0 top-full pt-2 -mt-px w-56 bg-transparent hidden group-hover:block z-50">
+                        <div class="bg-white text-gray-800 rounded-md shadow-lg border border-gray-200">
+                            <div class="px-4 py-3 border-b">
+                                <p class="text-sm font-semibold truncate" title="${loggedInUser.name}">${loggedInUser.name}</p>
+                                <p class="text-xs text-gray-500 truncate" title="${loggedInUser.email}">${loggedInUser.email}</p>
+                            </div>
+                            <ul class="py-1">
+                                <li><a href="profile.html" class="block px-4 py-2 text-sm hover:bg-gray-100">Quản lý tài khoản</a></li>
+                                <li><a href="wishlist.html" class="block px-4 py-2 text-sm hover:bg-gray-100">Sản phẩm yêu thích</a></li>
+                                ${loggedInUser.role === 'admin' ? `<li><a href="admin.html" class="block px-4 py-2 text-sm hover:bg-gray-100">Trang quản trị</a></li>` : ''}
+                            </ul>
+                        </div>
+                    </div>
+                  </div>`;
+                authHTMLDesktop = userMenuDropdown + `<button onclick="logout()" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-md transition text-xs">Đăng xuất</button>`;
+                
+                authHTMLMobile = `
+                    <div class="border-t border-gray-700 mt-2 pt-2 flex flex-col gap-2">
+                        <a href="profile.html" class="block px-2 py-1 hover:bg-gray-800 rounded">Quản lý tài khoản</a>
+                        <a href="wishlist.html" class="block px-2 py-1 hover:bg-gray-800 rounded">Sản phẩm yêu thích</a>
+                        ${loggedInUser.role === 'admin' ? '<a href="admin.html" class="block px-2 py-1 hover:bg-gray-800 rounded">Trang quản trị</a>' : '<a href="my-orders.html" class="block px-2 py-1 hover:bg-gray-800 rounded">Đơn hàng của tôi</a>'}
+                        <button onclick="logout()" class="w-full text-left px-2 py-1 hover:bg-gray-800 rounded text-red-400">Đăng xuất</button>
+                    </div>`;
+                
+                document.getElementById('greeting-text').textContent = `Chào mừng, ${loggedInUser.name}!`;
+                document.getElementById('user-greeting-bar').classList.remove('hidden');
+            } else {
+                authHTMLDesktop = `<a href="register.html" class="hover:text-yellow-400 transition py-2">Đăng ký</a><a href="login.html" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-md transition">Đăng nhập</a>`;
+                authHTMLMobile = `<div class="border-t border-gray-700 mt-2 pt-2 flex flex-col gap-2"><a href="register.html" class="block px-2 py-1 hover:bg-gray-800 rounded">Đăng ký</a><a href="login.html" class="block px-2 py-1 bg-blue-600 hover:bg-blue-700 rounded">Đăng nhập</a></div>`;
+                if(ordersLink) ordersLink.classList.add('hidden');
+                if(wishlistLink) wishlistLink.classList.add('hidden');
+            }
+            if(authSectionDesktop) authSectionDesktop.innerHTML = authHTMLDesktop;
+            
+            if(menuToggle && mobileMenu) {
+                const navContentForMobile = document.getElementById('desktop-menu-container').querySelector('nav').innerHTML;
+                mobileMenu.innerHTML = `<form action="product.html" method="GET" class="relative w-full mb-2"><input type="text" name="q" placeholder="Tìm sản phẩm..." required class="w-full pl-10 pr-4 py-2 rounded-full text-sm text-black"></form>` + navContentForMobile.replace(/id="dropdown-menu-desktop"/g, 'id="dropdown-menu-mobile"');
+                mobileMenu.innerHTML += authHTMLMobile;
+                menuToggle.addEventListener("click", () => mobileMenu.classList.toggle('hidden'));
+            }
+        }
+        
+        // --- GỌI TẤT CẢ CÁC HÀM KHI TẢI TRANG ---
+        setupUI();
+        updateCartIconCount();
+        
+        const heroImg = document.getElementById('heroImage');
+        if (heroImg) {
+            const images = ['./images/Banner/banner1.png','./images/Banner/Banner2.png','./images/Banner/Banner3.png','./images/Banner/Banner4.png'];
+            let currentImage = 0;
+            setInterval(() => {
+                heroImg.style.opacity = 0;
+                setTimeout(() => {
+                    currentImage = (currentImage + 1) % images.length;
+                    heroImg.src = images[currentImage];
+                    heroImg.style.opacity = 1;
+                }, 400);
+            }, 6000);
+        }
+    });
+  </script>
+
+</body>
+</html>

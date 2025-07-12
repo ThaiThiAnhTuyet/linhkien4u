@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Đơn hàng | linhkien4u</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .modal-bg { transition: opacity 0.3s ease; }
+        .modal-box { transition: all 0.3s ease; }
+    </style>
+    <script>
+        const user = JSON.parse(localStorage.getItem('loggedInUser'));
+        if (!user || user.role !== 'admin') {
+            alert('Bạn không có quyền truy cập trang này!');
+            window.location.href = 'login.html';
+        }
+    </script>
+</head>
+<body class="bg-gray-100 font-sans">
+    
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-gray-800 text-white flex flex-col">
+            <div class="px-6 py-4 border-b border-gray-700">
+                <a href="admin.html" class="text-2xl font-bold">linhkien4u</a>
+                <span class="block text-sm text-yellow-400">Admin Panel</span>
+            </div>
+            <nav class="flex-1 px-4 py-4 space-y-2">
+                <a href="admin.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-700 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M9.293 2.293a1 1 0 011.414 0l7 7A1 1 0 0117 11h-1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 00-1-1H9a1 1 0 00-1 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-6H3a1 1 0 01-.707-1.707l7-7z" clip-rule="evenodd" /></svg>
+                    <span>Bảng điều khiển</span>
+                </a>
+                <a href="admin-products.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-700 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm3.293 2.293a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L7.586 10 5.293 7.707a1 1 0 010-1.414zM11 7a1 1 0 100 2h3a1 1 0 100-2h-3z" /></svg>
+                    <span>Quản lý sản phẩm</span>
+                </a>
+                <a href="admin-orders.html" class="flex items-center gap-3 px-4 py-2 rounded-lg bg-gray-900 text-white font-semibold">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M5.5 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM16.5 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" /><path fill-rule="evenodd" d="M2 5a1 1 0 011-1h12.586a1 1 0 01.948.684l1.494 4.482A1 1 0 0117 10H4.414l-.32-1.921A1 1 0 015 7h10.438l-1.12-3.36a1 1 0 00-.949-.64H5.445L4.5 1.17A1 1 0 003.586 1H2a1 1 0 000 2h1.118l1.424 8.544a4 4 0 003.89 3.456h6.136a4 4 0 003.89-3.456l.328-1.968A1 1 0 0017 12h-2.145a1 1 0 01-.97-.763l-1.494-4.482A1 1 0 0011.586 6H6.872l-.32 1.921a1 1 0 01-1.96.638l.49-.294.001-.001.001-.001z" clip-rule="evenodd" /></svg>
+                    <span>Quản lý đơn hàng</span>
+                </a>
+                <a href="admin-users.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-700 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10 8a3 3 0 100-6 3 3 0 000 6zM3.465 14.493a1.23 1.23 0 00.41 1.412A9.957 9.957 0 0010 18c2.31 0 4.438-.784 6.131-2.095a1.23 1.23 0 00.41-1.412A9.957 9.957 0 0010 12c-2.31 0-4.438.784-6.131 2.095z" /></svg>
+                    <span>Quản lý người dùng</span>
+                </a>
+                <a href="admin-reports.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-700 transition">
+                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M15.99 5.99a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0V7.96l-3.22 3.22a.75.75 0 01-1.06 0l-1.97-1.97-3.22 3.22a.75.75 0 01-1.06-1.06l3.75-3.75a.75.75 0 011.06 0l1.97 1.97 2.69-2.69H12.75a.75.75 0 010-1.5h3.24z" clip-rule="evenodd" /><path d="M3 3.5A1.5 1.5 0 014.5 2h11A1.5 1.5 0 0117 3.5v11a1.5 1.5 0 01-1.5 1.5h-11A1.5 1.5 0 013 14.5v-11zM4.5 3a.5.5 0 00-.5.5v11a.5.5 0 00.5.5h11a.5.5 0 00.5-.5v-11a.5.5 0 00-.5-.5h-11z" /></svg>
+                    <span>Báo cáo</span>
+                </a>
+                 <a href="admin-chat.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-700 transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 5.523-4.477 10-10 10S1 17.523 1 12 5.477 2 11 2s10 4.477 10 10z"></path></svg>
+                    <span>Hỗ trợ trực tuyến</span>
+                </a>
+                <a href="admin-vouchers.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-700 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7a1 1 0 011.414-1.414L9 14.586V3a1 1 0 112 0v11.586l4.293-4.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                    <span>Quản lý Mã giảm giá</span>
+                </a>
+            </nav>
+            <div class="px-6 py-4 mt-auto border-t border-gray-700">
+                <a href="index.html" target="_blank" class="flex items-center gap-3 text-sm hover:text-yellow-400 transition">
+                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 18h-8.5A2.25 2.25 0 012 15.75v-8.5A2.25 2.25 0 014.25 5h4a.75.75 0 010 1.5h-4z" clip-rule="evenodd" /><path fill-rule="evenodd" d="M6.194 12.852a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L7.25 11.233 3.72 7.704a.75.75 0 00-1.06 1.06l3.5 3.5.034.034z" clip-rule="evenodd" /></svg>
+                    <span>Xem Trang Web</span>
+                </a>
+            </div>
+        </aside>
+
+        <div class="flex-1 flex flex-col">
+            <header class="bg-white shadow-sm p-4 flex justify-between items-center">
+                <h1 class="text-2xl font-semibold text-gray-800">Quản lý Đơn hàng</h1>
+                <div id="admin-info" class="text-sm text-gray-600"></div>
+            </header>
+            <main class="flex-1 p-6 lg:p-8 overflow-y-auto">
+                <div class="mb-4 flex justify-end">
+                    <button id="delete-all-orders-btn" class="flex items-center bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg shadow transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 012 0v6a1 1 0 11-2 0V8z" clip-rule="evenodd" /></svg>
+                        Xóa Toàn Bộ Đơn Hàng
+                    </button>
+                </div>
+                <div class="bg-white rounded-lg shadow overflow-x-auto">
+                    <table class="w-full text-sm text-left text-gray-600">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-200">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">Mã Đơn Hàng</th>
+                                <th scope="col" class="px-6 py-3">Khách hàng</th>
+                                <th scope="col" class="px-6 py-3">Ngày đặt</th>
+                                <th scope="col" class="px-6 py-3">Tổng tiền</th>
+                                <th scope="col" class="px-6 py-3">Trạng thái</th>
+                                <th scope="col" class="px-6 py-3 text-center">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="order-list"></tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <div id="order-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 hidden modal-bg">
+        <div id="modal-box" class="bg-white rounded-lg shadow-xl w-full max-w-2xl transform scale-95 opacity-0 modal-box flex flex-col max-h-[90vh]">
+            <div class="flex-shrink-0 flex justify-between items-center p-4 border-b">
+                <h3 class="text-xl font-semibold">Chi tiết Đơn hàng: <span id="modal-order-id" class="text-blue-600"></span></h3>
+                <button id="close-modal-btn" class="text-gray-400 hover:text-gray-600">×</button>
+            </div>
+            <div class="p-6 space-y-4 overflow-y-auto">
+                <div>
+                    <h4 class="font-bold text-gray-800">Thông tin khách hàng</h4>
+                    <p class="text-sm"><strong>Tên:</strong> <span id="modal-customer-name"></span></p>
+                    <p class="text-sm"><strong>Email:</strong> <span id="modal-customer-email"></span></p>
+                    <p class="text-sm"><strong>Địa chỉ:</strong> <span id="modal-customer-address"></span></p>
+                    <p class="text-sm"><strong>SĐT:</strong> <span id="modal-customer-phone"></span></p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-gray-800">Các sản phẩm trong đơn</h4>
+                    <div id="modal-product-list" class="mt-2 border rounded-lg overflow-hidden"></div>
+                </div>
+                <div class="text-right mt-4">
+                    <p class="text-lg font-bold">Tổng cộng: <span id="modal-total-price" class="text-red-600"></span></p>
+                </div>
+            </div>
+            <div class="flex-shrink-0 flex justify-between items-center p-4 bg-gray-50 border-t">
+                <div>
+                    <label for="order-status-select" class="text-sm font-medium">Cập nhật trạng thái:</label>
+                    <select id="order-status-select" class="mt-1 ml-2 text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                        <option value="Chờ xác nhận thanh toán">Chờ xác nhận thanh toán</option>
+                        <option value="Đang xử lý">Đang xử lý</option>
+                        <option value="Đã xác nhận">Đã xác nhận</option>
+                        <option value="Đang giao hàng">Đang giao hàng</option>
+                        <option value="Đã giao">Đã giao</option>
+                        <option value="Đã hủy">Đã hủy</option>
+                    </select>
+                </div>
+                <button id="update-status-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Cập nhật</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const orderList = document.getElementById('order-list');
+            const modal = document.getElementById('order-modal');
+            const modalBox = document.getElementById('modal-box');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const updateStatusBtn = document.getElementById('update-status-btn');
+            const deleteAllOrdersBtn = document.getElementById('delete-all-orders-btn');
+            const allProducts = JSON.parse(localStorage.getItem('products')) || [];
+
+            const ORDERS_KEY = 'orders'; 
+            let allOrders = JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
+
+            const saveOrders = () => localStorage.setItem(ORDERS_KEY, JSON.stringify(allOrders));
+            
+            const getStatusBadge = (status) => {
+                switch(status) {
+                    case 'Chờ xác nhận thanh toán': return 'bg-orange-100 text-orange-800';
+                    case 'Đang xử lý': return 'bg-yellow-100 text-yellow-800';
+                    case 'Đã xác nhận': return 'bg-blue-100 text-blue-800';
+                    case 'Đang giao hàng': return 'bg-indigo-100 text-indigo-800';
+                    case 'Đã giao': return 'bg-green-100 text-green-800';
+                    case 'Đã hủy': return 'bg-red-100 text-red-800';
+                    default: return 'bg-gray-100 text-gray-800';
+                }
+            };
+            
+            const renderOrders = () => {
+                orderList.innerHTML = '';
+                deleteAllOrdersBtn.disabled = allOrders.length === 0;
+                if (allOrders.length === 0) {
+                    orderList.innerHTML = `<tr><td colspan="6" class="text-center py-4">Chưa có đơn hàng nào.</td></tr>`;
+                    return;
+                }
+                const sortedOrders = [...allOrders].sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate));
+                sortedOrders.forEach(order => {
+                    const totalPriceFormatted = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.totalAmount);
+                    const paymentMethodText = order.paymentMethod === 'cod' ? 'COD' : (order.paymentMethod === 'bank_transfer' ? 'Chuyển khoản' : 'MoMo');
+                    orderList.innerHTML += `
+                        <tr class="bg-white border-b hover:bg-gray-50">
+                            <td class="px-6 py-4 font-medium text-blue-600">${order.orderId}</td>
+                            <td class="px-6 py-4">${order.customerInfo.name} <br><span class="text-xs text-gray-500">${order.customerInfo.email}</span></td>
+                            <td class="px-6 py-4">${new Date(order.orderDate).toLocaleDateString('vi-VN')}</td>
+                            <td class="px-6 py-4 font-semibold">${totalPriceFormatted}<br><span class="text-xs font-normal text-gray-500">(${paymentMethodText || 'N/A'})</span></td>
+                            <td class="px-6 py-4"><span class="px-2 py-1 text-xs font-medium rounded-full ${getStatusBadge(order.status)}">${order.status}</span></td>
+                            <td class="px-6 py-4 text-center">
+                                <button onclick="viewOrder('${order.orderId}')" class="font-medium text-blue-600 hover:underline">Xem</button>
+                                <span class="mx-1 text-gray-300">|</span>
+                                <button onclick="deleteOrder('${order.orderId}')" class="font-medium text-red-600 hover:underline">Xóa</button>
+                            </td>
+                        </tr>`;
+                });
+            };
+            
+            const openModal = () => { modal.classList.remove('hidden'); setTimeout(() => { modal.classList.remove('opacity-0'); modalBox.classList.remove('scale-95', 'opacity-0'); }, 10); };
+            const closeModal = () => { modalBox.classList.add('scale-95', 'opacity-0'); modal.classList.add('opacity-0'); setTimeout(() => modal.classList.add('hidden'), 300); };
+            
+            window.viewOrder = (orderId) => {
+                const order = allOrders.find(o => o.orderId === orderId);
+                if (!order) return;
+                
+                document.getElementById('modal-order-id').textContent = order.orderId;
+                document.getElementById('modal-customer-name').textContent = order.customerInfo.name;
+                document.getElementById('modal-customer-email').textContent = order.customerInfo.email;
+                document.getElementById('modal-customer-address').textContent = order.customerInfo.address;
+                document.getElementById('modal-customer-phone').textContent = order.customerInfo.phone;
+                
+                const modalProductList = document.getElementById('modal-product-list');
+                modalProductList.innerHTML = '';
+                order.items.forEach(item => {
+                    let itemPrice = item.price;
+                    if (typeof itemPrice !== 'number' || isNaN(itemPrice)) {
+                        const productFromDb = allProducts.find(p => p.id === item.id);
+                        itemPrice = productFromDb ? productFromDb.price : 0;
+                    }
+
+                    modalProductList.innerHTML += `
+                        <div class="flex justify-between items-center p-3 border-b last:border-b-0">
+                            <div>
+                                <p class="font-semibold">${item.name}</p>
+                                <p class="text-xs text-gray-500">Số lượng: ${item.quantity}</p>
+                            </div>
+                            <p class="text-sm font-medium">${new Intl.NumberFormat('vi-VN',{style:'currency',currency:'VND'}).format(itemPrice)}</p>
+                        </div>`;
+                });
+                
+                document.getElementById('modal-total-price').textContent = new Intl.NumberFormat('vi-VN',{style:'currency',currency:'VND'}).format(order.totalAmount);
+                document.getElementById('order-status-select').value = order.status;
+                updateStatusBtn.dataset.orderId = orderId;
+                openModal();
+            };
+            
+            window.deleteOrder = (orderId) => {
+                if (!confirm(`Bạn có chắc muốn xóa đơn hàng "${orderId}" không? Hành động này không thể hoàn tác.`)) return;
+                const initialLength = allOrders.length;
+                allOrders = allOrders.filter(o => o.orderId !== orderId);
+                if (allOrders.length < initialLength) {
+                    saveOrders();
+                    renderOrders();
+                    alert('Đã xóa đơn hàng thành công.');
+                }
+            };
+            
+            const handleUpdateStatus = () => {
+                const orderId = updateStatusBtn.dataset.orderId;
+                const newStatus = document.getElementById('order-status-select').value;
+                const orderIndex = allOrders.findIndex(o => o.orderId === orderId);
+                if (orderIndex !== -1) {
+                    allOrders[orderIndex].status = newStatus;
+                    saveOrders();
+                    renderOrders();
+                    closeModal();
+                    alert(`Đã cập nhật trạng thái đơn hàng ${orderId} thành "${newStatus}"!`);
+                }
+            };
+
+            const handleDeleteAllOrders = () => {
+                if (!confirm('!!! CẢNH BÁO !!!\nBạn có chắc muốn xóa TOÀN BỘ đơn hàng không? Hành động này không thể hoàn tác.')) return;
+                allOrders = [];
+                saveOrders();
+                renderOrders();
+                alert('Đã xóa toàn bộ đơn hàng.');
+            };
+
+            closeModalBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+            updateStatusBtn.addEventListener('click', handleUpdateStatus);
+            deleteAllOrdersBtn.addEventListener('click', handleDeleteAllOrders);
+            
+            const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+            if(loggedInUser) {
+                document.getElementById('admin-info').textContent = `Xin chào, ${loggedInUser.fullname || loggedInUser.email}`;
+            }
+
+            renderOrders();
+        });
+    </script>
+</body>
+</html>

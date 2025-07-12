@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Người dùng | linhkien4u</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Bộ canh gác -->
+    <script>
+        const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+        if (!loggedInUser || loggedInUser.role !== 'admin') {
+            alert('Bạn không có quyền truy cập trang này!');
+            window.location.href = 'login.html';
+        }
+    </script>
+</head>
+<body class="bg-gray-100 font-sans">
+    <div class="flex h-screen">
+        <!-- THANH ĐIỀU HƯỚNG BÊN TRÁI (Sidebar) -->
+        <aside class="w-64 bg-gray-800 text-white flex flex-col">
+            <div class="px-6 py-4 border-b border-gray-700">
+                <a href="admin.html" class="text-2xl font-bold">linhkien4u</a>
+                <span class="block text-sm text-yellow-400">Admin Panel</span>
+            </div>
+            <nav class="flex-1 px-4 py-4 space-y-2">
+                <a href="admin.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-700 transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                    <span>Bảng điều khiển</span>
+                </a>
+                <a href="admin-products.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-700 transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                    <span>Quản lý sản phẩm</span>
+                </a>
+                <a href="admin-orders.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-700 transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                    <span>Quản lý đơn hàng</span>
+                </a>
+                <a href="admin-users.html" class="flex items-center gap-3 px-4 py-2 rounded-lg bg-gray-700 text-white">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M15 21a6 6 0 00-9-5.197m0 0A10.004 10.004 0 0021 10.5M5 12a4 4 0 110-8 4 4 0 010 8z"></path></svg>
+                    <span>Quản lý người dùng</span>
+                </a>
+                       <a href="admin-reports.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-700 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                        <path d="M15.5 2A2.5 2.5 0 0013 4.5v11A2.5 2.5 0 0015.5 18h.75a.75.75 0 000-1.5h-.75a1 1 0 01-1-1v-11a1 1 0 011-1h.75a.75.75 0 000-1.5h-.75z" />
+                        <path d="M9.5 2A2.5 2.5 0 007 4.5v7A2.5 2.5 0 009.5 14h.75a.75.75 0 000-1.5h-.75a1 1 0 01-1-1v-7a1 1 0 011-1h.75a.75.75 0 000-1.5h-.75z" />
+                        <path d="M3.5 2A2.5 2.5 0 001 4.5v3A2.5 2.5 0 003.5 10h.75a.75.75 0 000-1.5h-.75a1 1 0 01-1-1v-3a1 1 0 011-1h.75a.75.75 0 000-1.5h-.75z" />
+                    </svg>
+                    <span>Báo cáo</span>
+                </a>
+                <a href="admin-chat.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-700 transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 5.523-4.477 10-10 10S1 17.523 1 12 5.477 2 11 2s10 4.477 10 10z"></path></svg>
+                    <span>Hỗ trợ trực tuyến</span>
+                </a>
+                 <a href="admin-vouchers.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-700 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7a1 1 0 011.414-1.414L9 14.586V3a1 1 0 112 0v11.586l4.293-4.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                    <span>Quản lý Mã giảm giá</span>
+                </a>
+            </nav>
+            <div class="px-6 py-4 mt-auto border-t border-gray-700">
+                <a href="index.html" class="flex items-center gap-3 text-sm hover:text-yellow-400 transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                    <span>Xem Trang Web</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- NỘI DUNG CHÍNH -->
+        <div class="flex-1 flex flex-col">
+            <header class="bg-white shadow-sm p-4">
+                <h1 class="text-2xl font-semibold text-gray-800">Quản lý Người dùng</h1>
+            </header>
+
+            <main class="flex-1 p-6 lg:p-8 overflow-y-auto">
+                <div class="bg-white rounded-lg shadow overflow-x-auto">
+                    <table class="w-full text-sm text-left text-gray-600">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-200">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">Tên Người Dùng</th>
+                                <th scope="col" class="px-6 py-3">Email</th>
+                                <th scope="col" class="px-6 py-3">Vai trò</th>
+                                <th scope="col" class="px-6 py-3">Trạng thái</th>
+                                <th scope="col" class="px-6 py-3 text-center">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="user-list">
+                            <!-- Dữ liệu người dùng sẽ được chèn vào đây bằng Javascript -->
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const userListEl = document.getElementById('user-list');
+            let allUsers = JSON.parse(localStorage.getItem('users')) || [];
+
+            const saveUsers = () => {
+                localStorage.setItem('users', JSON.stringify(allUsers));
+            };
+
+            const renderUserList = () => {
+                userListEl.innerHTML = ''; 
+                const usersToDisplay = allUsers.filter(user => user.email !== loggedInUser.email);
+                if (usersToDisplay.length === 0) {
+                    userListEl.innerHTML = `<tr><td colspan="5" class="text-center py-4">Không có người dùng nào khác để quản lý.</td></tr>`;
+                    return;
+                }
+
+                usersToDisplay.forEach(user => {
+                    const statusBadge = user.status === 'inactive' 
+                        ? '<span class="px-2 py-1 text-xs font-medium rounded-full bg-red-100 text-red-800">Đã khóa</span>' 
+                        : '<span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">Hoạt động</span>';
+
+                    const toggleStatusButton = user.status === 'inactive'
+                        ? `<button onclick="toggleUserStatus('${user.email}')" class="font-medium text-green-600 hover:underline">Mở khóa</button>`
+                        : `<button onclick="toggleUserStatus('${user.email}')" class="font-medium text-yellow-600 hover:underline">Khóa</button>`;
+                    
+                    const row = `
+                        <tr class="bg-white border-b hover:bg-gray-50">
+                            <td class="px-6 py-4 font-medium text-gray-900">${user.name}</td>
+                            <td class="px-6 py-4">${user.email}</td>
+                            <td class="px-6 py-4">${user.role === 'admin' ? 'Quản trị viên' : 'Khách hàng'}</td>
+                            <td class="px-6 py-4">${statusBadge}</td>
+                            <td class="px-6 py-4 text-center space-x-2">
+                                ${toggleStatusButton}
+                                <span class="text-gray-300">|</span>
+                                <button onclick="deleteUser('${user.email}')" class="font-medium text-red-600 hover:underline">Xóa</button>
+                            </td>
+                        </tr>
+                    `;
+                    userListEl.insertAdjacentHTML('beforeend', row);
+                });
+            };
+
+            window.toggleUserStatus = (userEmail) => {
+                const userIndex = allUsers.findIndex(u => u.email === userEmail);
+                if (userIndex === -1) return;
+
+                const user = allUsers[userIndex];
+                const newStatus = user.status === 'inactive' ? 'active' : 'inactive';
+                const actionText = newStatus === 'active' ? 'mở khóa' : 'khóa';
+
+                if (confirm(`Bạn có chắc chắn muốn ${actionText} tài khoản "${user.name}" không?`)) {
+                    allUsers[userIndex].status = newStatus;
+                    saveUsers();
+                    renderUserList();
+                    alert(`Đã ${actionText} tài khoản thành công.`);
+                }
+            };
+            
+            window.deleteUser = (userEmail) => {
+                const userToDelete = allUsers.find(u => u.email === userEmail);
+                if (!userToDelete) return;
+
+                if (confirm(`!!! CẢNH BÁO !!!\nBạn có chắc chắn muốn XÓA VĨNH VIỄN tài khoản "${userToDelete.name}" không? Hành động này không thể hoàn tác.`)) {
+                    allUsers = allUsers.filter(u => u.email !== userEmail);
+                    saveUsers();
+                    renderUserList();
+                    alert('Đã xóa người dùng thành công.');
+                }
+            };
+
+            renderUserList();
+        });
+    </script>
+</body>
+</html>

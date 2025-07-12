@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Mã giảm giá | linhkien4u Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        const user = JSON.parse(localStorage.getItem('loggedInUser'));
+        if (!user || user.role !== 'admin') {
+            alert('Bạn không có quyền truy cập trang này!');
+            window.location.href = 'login.html';
+        }
+    </script>
+</head>
+<body class="bg-gray-100 font-sans">
+    <div class="flex h-screen">
+        <!-- Sidebar (giữ nguyên) -->
+        <aside class="w-64 bg-gray-800 text-white flex flex-col">
+             <div class="px-6 py-4 border-b border-gray-700">
+                <a href="admin.html" class="text-2xl font-bold">linhkien4u</a>
+                <span class="block text-sm text-yellow-400">Admin Panel</span>
+            </div>
+            <nav class="flex-1 px-4 py-4 space-y-2">
+                <a href="admin.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-700 transition"><span>Bảng điều khiển</span></a>
+                <a href="admin-products.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-700 transition"><span>Quản lý sản phẩm</span></a>
+                <a href="admin-orders.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-700 transition"><span>Quản lý đơn hàng</span></a>
+                <a href="admin-users.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-700 transition"><span>Quản lý người dùng</span></a>
+                <a href="admin-vouchers.html" class="flex items-center gap-3 px-4 py-2 rounded-lg bg-gray-900 text-white font-semibold"><span>Quản lý Mã giảm giá</span></a>
+                <a href="admin-reports.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-700 transition"><span>Báo cáo</span></a>
+                <a href="admin-chat.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-700 transition"><span>Hỗ trợ trực tuyến</span></a>
+            </nav>
+            <div class="px-6 py-4 mt-auto border-t border-gray-700">
+                <a href="index.html" class="flex items-center gap-3 text-sm hover:text-yellow-400 transition"><span>Xem Trang Web</span></a>
+            </div>
+        </aside>
+
+        <div class="flex-1 flex flex-col">
+            <header class="bg-white shadow-sm p-4 flex justify-between items-center">
+                <h1 class="text-2xl font-semibold text-gray-800">Quản lý Mã giảm giá</h1>
+                <button id="add-voucher-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Thêm Mã mới</button>
+            </header>
+            <main class="flex-1 p-6 lg:p-8 overflow-y-auto">
+                <div class="bg-white rounded-lg shadow overflow-x-auto">
+                    <table class="w-full text-sm text-left text-gray-600">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-200">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">Mã Code</th>
+                                <th scope="col" class="px-6 py-3">Loại/Giá trị</th>
+                                <th scope="col" class="px-6 py-3">Điều kiện Đơn hàng</th>
+                                <th scope="col" class="px-6 py-3">Sử dụng</th>
+                                <th scope="col" class="px-6 py-3">Ngày hết hạn</th>
+                                <th scope="col" class="px-6 py-3">Trạng thái</th>
+                                <th scope="col" class="px-6 py-3 text-center">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="voucher-list"></tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <!-- Modal Thêm/Sửa Voucher -->
+    <div id="voucher-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-lg">
+            <form id="voucher-form">
+                <div class="p-5 border-b flex justify-between items-center">
+                    <h3 id="modal-title" class="text-xl font-bold"></h3>
+                    <button type="button" class="close-modal-btn text-gray-400 hover:text-gray-600">×</button>
+                </div>
+                <div class="p-6 space-y-4">
+                    <div>
+                        <label for="voucher-code" class="block text-sm font-medium">Mã Code</label>
+                        <input type="text" id="voucher-code" class="mt-1 block w-full p-2 border rounded-md" placeholder="VD: GIAM10, FREESHIP2025" required>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="voucher-type" class="block text-sm font-medium">Loại giảm giá</label>
+                            <select id="voucher-type" class="mt-1 block w-full p-2 border rounded-md">
+                                <option value="percentage">Theo phần trăm (%)</option>
+                                <option value="fixed">Số tiền cố định (VNĐ)</option>
+                                <option value="shipping">Miễn phí vận chuyển</option> <!-- THÊM LỰA CHỌN MỚI -->
+                            </select>
+                        </div>
+                        <div>
+                            <label for="voucher-value" class="block text-sm font-medium">Giá trị</label>
+                            <input type="number" id="voucher-value" min="0" class="mt-1 block w-full p-2 border rounded-md" required>
+                        </div>
+                    </div>
+                     <div>
+                        <label for="voucher-min-order" class="block text-sm font-medium">Đơn hàng tối thiểu (VNĐ)</label>
+                        <input type="number" id="voucher-min-order" min="0" value="0" class="mt-1 block w-full p-2 border rounded-md">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                           <label for="voucher-uses" class="block text-sm font-medium">Tổng lượt sử dụng</label>
+                           <input type="number" id="voucher-uses" min="1" class="mt-1 block w-full p-2 border rounded-md" required>
+                        </div>
+                        <div>
+                           <label for="voucher-expiry" class="block text-sm font-medium">Ngày hết hạn</label>
+                           <input type="date" id="voucher-expiry" class="mt-1 block w-full p-2 border rounded-md" required>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="flex items-center">
+                            <input type="checkbox" id="voucher-is-active" class="h-4 w-4 rounded">
+                            <span class="ml-2 text-sm">Kích hoạt mã này</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="p-4 bg-gray-50 border-t flex justify-end">
+                    <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg">Lưu Mã</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const VOUCHERS_KEY = 'vouchers';
+        let vouchers = JSON.parse(localStorage.getItem(VOUCHERS_KEY)) || [];
+
+        const modal = document.getElementById('voucher-modal');
+        const form = document.getElementById('voucher-form');
+        const addVoucherBtn = document.getElementById('add-voucher-btn');
+        const voucherTypeSelect = document.getElementById('voucher-type');
+        const voucherValueInput = document.getElementById('voucher-value');
+
+        const formatCurrency = (n) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(n);
+        const formatDate = (dateString) => new Date(dateString).toLocaleDateString('vi-VN');
+
+        const saveVouchers = () => localStorage.setItem(VOUCHERS_KEY, JSON.stringify(vouchers));
+
+        const renderVouchers = () => {
+            const listEl = document.getElementById('voucher-list');
+            listEl.innerHTML = '';
+            if (vouchers.length === 0) {
+                listEl.innerHTML = '<tr><td colspan="7" class="text-center py-4">Chưa có mã giảm giá nào.</td></tr>';
+                return;
+            }
+            vouchers.forEach(v => {
+                let valueDisplay = '';
+                if (v.type === 'percentage') valueDisplay = `${v.value}%`;
+                else if (v.type === 'fixed') valueDisplay = formatCurrency(v.value);
+                else if (v.type === 'shipping') valueDisplay = 'Miễn phí Ship';
+
+                const expiryDate = new Date(v.expiryDate);
+                const isExpired = new Date() > expiryDate;
+                const statusClass = v.isActive && !isExpired ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800';
+                const statusText = v.isActive && !isExpired ? 'Hoạt động' : 'Hết hạn/Khóa';
+
+                listEl.innerHTML += `
+                    <tr class="bg-white border-b hover:bg-gray-50">
+                        <td class="px-6 py-4 font-mono font-bold text-blue-600">${v.code}</td>
+                        <td class="px-6 py-4">${valueDisplay}</td>
+                        <td class="px-6 py-4">Từ ${formatCurrency(v.minOrderValue)}</td>
+                        <td class="px-6 py-4">${v.usedCount} / ${v.uses}</td>
+                        <td class="px-6 py-4">${formatDate(v.expiryDate)}</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 text-xs font-medium rounded-full ${statusClass}">${statusText}</span></td>
+                        <td class="px-6 py-4 text-center">
+                            <button onclick="editVoucher('${v.code}')" class="font-medium text-blue-600 hover:underline">Sửa</button> |
+                            <button onclick="deleteVoucher('${v.code}')" class="font-medium text-red-600 hover:underline">Xóa</button>
+                        </td>
+                    </tr>`;
+            });
+        };
+
+        const toggleValueInput = () => {
+            if (voucherTypeSelect.value === 'shipping') {
+                voucherValueInput.disabled = true;
+                voucherValueInput.value = 0; // Giá trị không cần thiết
+                voucherValueInput.required = false;
+                voucherValueInput.parentElement.classList.add('opacity-50');
+            } else {
+                voucherValueInput.disabled = false;
+                voucherValueInput.required = true;
+                voucherValueInput.parentElement.classList.remove('opacity-50');
+            }
+        };
+        voucherTypeSelect.addEventListener('change', toggleValueInput);
+
+        const openModal = (title, voucher = null) => {
+            document.getElementById('modal-title').textContent = title;
+            const codeInput = document.getElementById('voucher-code');
+            if (voucher) {
+                codeInput.value = voucher.code;
+                codeInput.disabled = true;
+                document.getElementById('voucher-type').value = voucher.type;
+                document.getElementById('voucher-value').value = voucher.value;
+                document.getElementById('voucher-min-order').value = voucher.minOrderValue;
+                document.getElementById('voucher-uses').value = voucher.uses;
+                document.getElementById('voucher-expiry').value = voucher.expiryDate;
+                document.getElementById('voucher-is-active').checked = voucher.isActive;
+            } else {
+                form.reset();
+                codeInput.disabled = false;
+                document.getElementById('voucher-is-active').checked = true;
+            }
+            toggleValueInput(); // Cập nhật trạng thái ô giá trị
+            modal.classList.remove('hidden');
+        };
+
+        const closeModal = () => modal.classList.add('hidden');
+        document.querySelectorAll('.close-modal-btn').forEach(btn => btn.addEventListener('click', closeModal));
+
+        addVoucherBtn.addEventListener('click', () => openModal('Thêm Mã giảm giá mới'));
+        
+        window.editVoucher = (code) => {
+            const voucher = vouchers.find(v => v.code === code);
+            if (voucher) openModal('Chỉnh sửa Mã giảm giá', voucher);
+        };
+
+        window.deleteVoucher = (code) => {
+            if (confirm(`Bạn có chắc muốn xóa mã "${code}"?`)) {
+                vouchers = vouchers.filter(v => v.code !== code);
+                saveVouchers();
+                renderVouchers();
+            }
+        };
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const code = document.getElementById('voucher-code').value.toUpperCase().trim();
+            const existingVoucherIndex = vouchers.findIndex(v => v.code === code);
+            
+            if (!code) { alert('Mã code không được để trống!'); return; }
+            if (existingVoucherIndex !== -1 && document.getElementById('voucher-code').disabled === false) {
+                alert('Mã code này đã tồn tại!');
+                return;
+            }
+
+            const voucherData = {
+                code: code,
+                type: document.getElementById('voucher-type').value,
+                value: parseInt(document.getElementById('voucher-value').value) || 0,
+                minOrderValue: parseInt(document.getElementById('voucher-min-order').value) || 0,
+                uses: parseInt(document.getElementById('voucher-uses').value),
+                expiryDate: document.getElementById('voucher-expiry').value,
+                isActive: document.getElementById('voucher-is-active').checked,
+                usedCount: existingVoucherIndex > -1 ? vouchers[existingVoucherIndex].usedCount : 0,
+            };
+            
+            if (existingVoucherIndex > -1) {
+                vouchers[existingVoucherIndex] = voucherData;
+            } else {
+                vouchers.push(voucherData);
+            }
+            
+            saveVouchers();
+            renderVouchers();
+            closeModal();
+        });
+
+        renderVouchers();
+    });
+    </script>
+</body>
+</html>

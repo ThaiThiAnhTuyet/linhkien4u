@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hướng dẫn thanh toán | linhkien4u</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        const tempOrderForGuide = sessionStorage.getItem('tempOrder');
+        if (!tempOrderForGuide) {
+            alert('Không có thông tin đơn hàng để thanh toán. Vui lòng thử lại.');
+            window.location.href = 'cart.html';
+        }
+    </script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+
+    <div class="w-full max-w-lg bg-white rounded-xl shadow-2xl overflow-hidden">
+        <div class="p-6 bg-gray-50 border-b">
+            <h2 id="payment-title" class="text-xl font-bold text-gray-800 text-center">Đang tải thông tin...</h2>
+        </div>
+        
+        <div class="p-6 space-y-4">
+            <div class="bg-blue-50 p-4 rounded-lg text-left text-sm">
+                <p>Mã đơn hàng: <strong id="order-id" class="text-blue-600"></strong></p>
+                <p>Tổng tiền thanh toán: <strong id="order-total" class="text-red-600 text-lg"></strong></p>
+            </div>
+
+            <div class="text-center text-red-500 font-semibold">
+                <p>Vui lòng nhập chính xác nội dung chuyển khoản dưới đây để đơn hàng được xử lý nhanh nhất:</p>
+            </div>
+            
+            <div id="transfer-content" class="bg-red-100 text-red-700 font-mono text-lg text-center p-3 rounded-lg cursor-pointer" title="Nhấn để sao chép">
+                <!-- JavaScript sẽ điền nội dung vào đây -->
+            </div>
+            
+            <!-- Phần cho Chuyển khoản Ngân hàng -->
+            <div id="payment-details-bank" class="hidden">
+                <div class="flex flex-col md:flex-row gap-6 items-center justify-center pt-4">
+                    <div class="text-sm space-y-2">
+                        <p><strong>Ngân hàng:</strong></p>
+                        <p>TMCP Công Thương Việt Nam (VietinBank) - Chi nhánh Tân Bình</p>
+                        <p class="mt-2"><strong>Chủ tài khoản:</strong> Cong Ty TNHH.MTV TM DV BKITEC</p>
+                        <p><strong>Số tài khoản:</strong> 118000134029</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="p-6 bg-gray-50 border-t">
+            <button id="confirm-payment-btn" class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition">
+                Tôi đã hoàn tất thanh toán
+            </button>
+             <a href="cart.html" class="block text-center mt-3 text-sm text-gray-600 hover:underline">Hủy và quay lại giỏ hàng</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tempOrder = JSON.parse(sessionStorage.getItem('tempOrder'));
+            const params = new URLSearchParams(window.location.search);
+            const method = params.get('method');
+            
+            const formatCurrency = (n) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(n || 0);
+
+            document.getElementById('order-id').textContent = tempOrder.orderId;
+            document.getElementById('order-total').textContent = formatCurrency(tempOrder.totalAmount);
+            
+            const transferContentEl = document.getElementById('transfer-content');
+            const transferContent = `TT ${tempOrder.orderId}`;
+            transferContentEl.textContent = transferContent;
+
+            const bankDetails = document.getElementById('payment-details-bank');
+            const momoDetails = document.getElementById('payment-details-momo');
+            const titleEl = document.getElementById('payment-title');
+
+            if (method === 'bank_transfer') {
+                titleEl.textContent = 'Hướng dẫn Chuyển khoản Ngân hàng';
+                bankDetails.classList.remove('hidden');
+            } else if (method === 'momo') {
+                titleEl.textContent = 'Hướng dẫn thanh toán qua Ví MoMo';
+                momoDetails.classList.remove('hidden');
+            } else {
+                titleEl.textContent = 'Phương thức không hợp lệ';
+            }
+
+            transferContentEl.addEventListener('click', () => {
+                navigator.clipboard.writeText(transferContent)
+                    .then(() => alert(`Đã sao chép nội dung: ${transferContent}`))
+                    .catch(err => console.error('Lỗi sao chép: ', err));
+            });
+
+            document.getElementById('confirm-payment-btn').addEventListener('click', () => {
+                const allVouchers = JSON.parse(localStorage.getItem('vouchers')) || [];
+                const appliedVoucherCode = tempOrder.discount.code;
+                
+                if (appliedVoucherCode) {
+                    const voucherIndex = allVouchers.findIndex(v => v.code === appliedVoucherCode);
+                    if (voucherIndex > -1) {
+                        allVouchers[voucherIndex].usedCount++;
+                        localStorage.setItem('vouchers', JSON.stringify(allVouchers));
+                    }
+                }
+
+                const ALL_ORDERS_KEY = 'orders';
+                const USER_CART_KEY = `cart_${tempOrder.userEmail}`;
+                let allOrders = JSON.parse(localStorage.getItem(ALL_ORDERS_KEY)) || [];
+                allOrders.unshift(tempOrder); 
+                localStorage.setItem(ALL_ORDERS_KEY, JSON.stringify(allOrders));
+                localStorage.removeItem(USER_CART_KEY);
+                sessionStorage.removeItem('tempOrder');
+                
+                const successMessage = `Quý khách đã đặt hàng thành công. Cảm ơn quý khách đã mua hàng.\nChúng tôi sẽ liên lạc với quý khách trong thời gian sớm nhất.\nQuý khách có thể thanh toán bằng tiền mặt hoặc chuyển khoản qua Ngân hàng TMCP Công Thương Việt Nam chi nhánh Tân Bình theo số tài khoản: 118000134029 hoặc trực tiếp qua CÔNG TY TNHH.MTV TM DV BKITEC`;
+                alert(successMessage);
+                
+                window.location.href = 'my-orders.html';
+            });
+        });
+    </script>
+</body>
+</html>

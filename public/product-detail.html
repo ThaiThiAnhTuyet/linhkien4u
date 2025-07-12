@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chi tiết sản phẩm | linhkien4u</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .product-title { color: #1e40af; }
+    .spec-label { font-weight: 600; min-width: 120px; display: inline-block; color: #4b5563; }
+    #cart-count {
+      position: absolute; top: -8px; right: -10px; background-color: red; color: white;
+      border-radius: 50%; padding: 0px 6px; font-size: 12px; font-weight: bold;
+      border: 2px solid #111827; display: none;
+    }
+    .wishlist-btn.active svg {
+        fill: #ef4444;
+        stroke: #ef4444;
+    }
+  </style>
+</head>
+<body class="bg-white text-gray-900 font-sans">
+
+  <header class="bg-gray-900 text-white sticky top-0 z-50 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+      <a href="index.html" class="text-2xl font-bold">linhkien4u</a>
+      <nav class="flex items-center gap-5 text-sm">
+        <a href="index.html" class="hover:text-yellow-400 transition">Trang chủ</a>
+        <a href="product.html" class="hover:text-yellow-400 transition">Sản phẩm</a>
+        <a href="cart.html" class="relative hover:text-yellow-400 transition">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          <span id="cart-count">0</span>
+        </a>
+        <a href="my-orders.html" class="hover:text-yellow-400 transition">Đơn hàng</a>
+        <div id="auth-section-desktop" class="flex items-center gap-4"></div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-8">
+    <!-- ===== PHẦN MÃ MỚI: NÚT QUAY LẠI ===== -->
+    <div class="mb-6">
+        <a href="javascript:history.back()" class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 hover:underline transition font-semibold">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+            </svg>
+            Quay lại trang trước
+        </a>
+    </div>
+    <!-- ===== KẾT THÚC PHẦN MÃ MỚI ===== -->
+
+    <div id="product-detail-container">
+      <div class="text-center text-gray-500 py-10">Đang tải thông tin sản phẩm...</div>
+    </div>
+  </main>
+  
+  <footer class="bg-gray-900 text-white py-6 text-center mt-10">
+    <p class="text-sm">© 2025 linhkien4u. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Hàm khởi tạo dữ liệu chính, bạn không cần sửa ở đây
+    function initializeMasterData() {
+        if (localStorage.getItem('products')) return;
+        const legacyProductData = {
+            "ic-chuc-nang": { title: "IC Chức năng", products: [ { id: "DAC0832LCN", name: "DAC0832LCN Bộ chuyển đổi DAC 8-bit", priceTiers: [{ range: "1+", price: "29.000đ" }], img: "./images/Product/SanPhamNoiBat/DAC0832LCN.jpg", manufacturer: "National Semiconductor", origin: "Chính hãng", status: "Còn hàng", description: "Bộ chuyển đổi Tương tự-Số (DAC) 8-bit, song song, có vi xử lý tương thích và logic chốt kép." } ] },
+            "ket-noi": { title: "Đầu nối & Cổng kết nối", products: [ { id: "HR911105A", name: "HR911105A Cổng mạng Ethernet RJ45", priceTiers: [{ range: "1+", price: "15.000đ" }], img: "./images/Product/SanPhamNoiBat/HR911105A.jpg", manufacturer: "HanRun", origin: "Chính hãng", status: "Còn hàng", description: "Đầu nối Ethernet RJ45 tích hợp biến áp (Magnetics). Thường được sử dụng trong các mạch mạng, bo mạch phát triển có kết nối Ethernet." } ] },
+            "transistor-bjt": { title: "Transistor BJT", products: [ { id: "a1013", name: "A1013", priceTiers: [{ range: "1+", price: "1.000đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/Transistor BJT/A1013.jpg", manufacturer: "Toshiba", origin: "Nhật Bản", status: "Còn hàng", description: "Transistor PNP, thường dùng trong các mạch khuếch đại âm tần và công tắc điện tử." }, { id: "d718", name: "D718", priceTiers: [{ range: "1+", price: "9.000đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/Transistor BJT/D718.jpg", manufacturer: "Toshiba", origin: "Nhật Bản", status: "Còn hàng", description: "Transistor NPN công suất, phù hợp cho các mạch khuếch đại công suất âm thanh." }, { id: "b688", name: "B688", priceTiers: [{ range: "1+", price: "9.000đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/Transistor BJT/B688.jpg", manufacturer: "Toshiba", origin: "Nhật Bản", status: "Còn hàng", description: "Transistor PNP công suất, cặp bổ sung với D718." }, { id: "c5200", name: "2SC5200 (C5200)", priceTiers: [{ range: "1+", price: "30.000đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/Transistor BJT/2SC5200 (C5200).jpg", manufacturer: "Toshiba", origin: "Nhật Bản", status: "Còn hàng", description: "Transistor NPN công suất cao của Toshiba, được sử dụng rộng rãi trong các bộ khuếch đại âm thanh Hi-Fi." } ] },
+            "mosfet": { title: "MOSFET", products: [ { id: "IRF9540", name: "IRF9540", priceTiers: [{ range: "1+", price: "11.500đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/MOSFET/IRF9540.png", manufacturer: "Vishay", origin: "Chính hãng", status: "Còn hàng", description: "MOSFET kênh P, được sử dụng trong các ứng dụng chuyển mạch tốc độ cao, bộ điều chỉnh tuyến tính và bộ khuếch đại." }, { id: "6N60A", name: "6N60A", priceTiers: [{ range: "1+", price: "14.000đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/MOSFET/6N60A.jpg", manufacturer: "STMicroelectronics", origin: "Chính hãng", status: "Còn hàng", description: "MOSFET kênh N, điện áp chịu đựng cao, thích hợp cho các bộ nguồn chuyển mạch (SMPS)." }, { id: "AOD1N60", name: "AOD1N60", priceTiers: [{ range: "1+", price: "8.500đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/MOSFET/AOD1N60.jpg", manufacturer: "Alpha & Omega", origin: "Chính hãng", status: "Còn hàng", description: "MOSFET kênh N, được tối ưu hóa cho các ứng dụng chuyển mạch nhanh." }, { id: "W14NK50Z", name: "W14NK50Z", priceTiers: [{ range: "1+", price: "39.000đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/MOSFET/W14NK50Z.jpg", manufacturer: "STMicroelectronics", origin: "Chính hãng", status: "Còn hàng", description: "SuperMESH™ MOSFET kênh N, cung cấp hiệu suất chuyển mạch vượt trội và độ bền cao." }, { id: "2SK2369", name: "2SK2369", priceTiers: [{ range: "1+", price: "14.000đ" }], img: "./images/Product/SanPhamNoiBat/2SK2369.jpg", manufacturer: "Renesas", origin: "Nhật Bản", status: "Còn hàng", description: "MOSFET kênh N 600V 3A, thường được sử dụng trong các bộ nguồn chuyển mạch và mạch điều khiển." } ] },
+            "igbt": { title: "IGBT", products: [ { id: "FGA25N120", name: "FGA25N120", priceTiers: [{ range: "1+", price: "29.000đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/IGBT/FGA25N120.jpg", manufacturer: "Fairchild", origin: "Chính hãng", status: "Còn hàng", description: "IGBT hiệu suất cao, thường dùng trong các bộ biến tần và điều khiển động cơ." }, { id: "H20R1203", name: "H20R1203", priceTiers: [{ range: "1+", price: "50.000đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/IGBT/H20R1203.jpg", manufacturer: "Infineon", origin: "Đức", status: "Còn hàng", description: "IGBT dòng H3 của Infineon, tổn hao thấp, phù hợp cho các ứng dụng bếp từ." } ] },
+            "ic-nguon": { title: "IC Nguồn", products: [ { id: "LM317", name: "LM317", priceTiers: [{ range: "1+", price: "4.000đ" }], img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/IC Nguồn/LM317.png", manufacturer: "Texas Instruments", origin: "Chính hãng", status: "Còn hàng" } ] },
+            "module-cong-suat": { title: "Module Công suất", products: [ { id: "PM50CLA060", name: "PM50CLA060", priceTiers: [{ range: "1+", price: "3200000đ" }], img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/Module Công suất/PM50CLA060.png", manufacturer: "Mitsubishi", origin: "Nhật Bản", status: "Còn hàng" }, { id: "PM200RSA060", name: "PM200RSA060", img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/Module Công suất/PM200RSA060.png", manufacturer: "Mitsubishi Electric", origin: "Chính hãng", status: "Còn [15 Pcs]", description: "Module IGBT công suất cao.", priceTiers: [{ range: "1+", price: "7.500.000đ" }] }, { id: "FSBF10CH60B", name: "FSBF10CH60B", priceTiers: [{ range: "1+", price: "800.000đ" }], img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/Module Công suất/FSBF10CH60B.png", manufacturer: "ON Semiconductor", origin: "Chính hãng", status: "Còn hàng" }, { id: "SKKT26/12D", name: "SKKT26/12D", priceTiers: [{ range: "1+", price: "490.000đ" }], img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/Module Công suất/SKKT26_12D.jpg", manufacturer: "SEMIKRON", origin: "Đức", status: "Còn hàng" } ] },
+            "tu-dien-smd": { title: "Tụ điện SMD (dán)", products: [ { id: "TTCS230", name: "TTCS230", priceTiers: [{ range: "1+", price: "65.000đ" }], img: "./images/Product/CẢM BIẾN (SENSORS)/Cảm biến màu sắc/TCS230.jpg", manufacturer: "TAOS", origin: "Chính hãng", status: "Còn hàng" }, { id: "tụ Aluminum 100uF/16V", name: "tụ Aluminum 100uF/16V", priceTiers: [{ range: "1+", price: "1.500đ" }], img: "./images/Product/TỤ ĐIỆN (CAPACITORS)/Tụ điện SMD (dán)/tụ Aluminum 100uF_16V.png", manufacturer: "Samwha", origin: "Hàn Quốc", status: "Còn hàng" } ] }
+        };
+        const parsePrice = (s) => (s && typeof s === 'string') ? parseInt(s.replace(/[\.đ₫,]/g, '')) : 0;
+        let flatProducts = [], categories = [], brands = [];
+        let categoryMap = new Map(), brandMap = new Map();
+        for (const typeKey in legacyProductData) {
+            const categoryInfo = legacyProductData[typeKey];
+            const categoryName = categoryInfo.title;
+            if (!categoryMap.has(categoryName)) {
+                categoryMap.set(categoryName, typeKey);
+                categories.push({ id: typeKey, name: categoryName });
+            }
+            categoryInfo.products.forEach(p => {
+                const brandName = p.manufacturer || 'Chưa xác định';
+                if (!brandMap.has(brandName)) {
+                    const brandId = `brand-${Date.now()}-${Math.random()}`;
+                    brandMap.set(brandName, brandId);
+                    brands.push({ id: brandId, name: brandName });
+                }
+                const basePrice = p.priceTiers && p.priceTiers.length > 0 ? p.priceTiers[0].price : "0";
+                flatProducts.push({
+                    ...p, id: p.id,
+                    price: parsePrice(basePrice),
+                    stock: Math.floor(Math.random() * 100) + 20,
+                    categoryId: typeKey, brandId: brandMap.get(brandName)
+                });
+            });
+        }
+        localStorage.setItem('products', JSON.stringify(flatProducts));
+        localStorage.setItem('categories', JSON.stringify(categories));
+        localStorage.setItem('brands', JSON.stringify(brands));
+    }
+    initializeMasterData();
+
+    // --- Các hàm tiện ích ---
+    const getWishlist = () => JSON.parse(localStorage.getItem(`wishlist_${JSON.parse(localStorage.getItem('loggedInUser'))?.email}`)) || [];
+    const isProductInWishlist = (productId) => getWishlist().includes(productId);
+
+    window.toggleWishlist = (event, productId) => {
+        event.stopPropagation();
+        const user = JSON.parse(localStorage.getItem('loggedInUser'));
+        if (!user) { alert('Vui lòng đăng nhập để sử dụng chức năng này!'); return; }
+        const wishlistKey = `wishlist_${user.email}`;
+        let wishlist = getWishlist();
+        const button = event.currentTarget;
+        if (wishlist.includes(productId)) {
+            wishlist = wishlist.filter(id => id !== productId);
+            button.classList.remove('active');
+        } else {
+            wishlist.push(productId);
+            button.classList.add('active');
+        }
+        localStorage.setItem(wishlistKey, JSON.stringify(wishlist));
+    };
+
+    function handleAddToCart(productId, quantity, redirect = false) {
+        const user = JSON.parse(localStorage.getItem('loggedInUser'));
+        if (!user || user.role !== 'user') {
+            alert('Vui lòng đăng nhập để thực hiện chức năng này!');
+            window.location.href = 'login.html';
+            return;
+        }
+        if (user.status === 'inactive') {
+            alert('Tài khoản của bạn đã bị khóa. Vui lòng liên hệ hỗ trợ.');
+            return;
+        }
+        if (quantity < 1) {
+            alert('Số lượng phải lớn hơn hoặc bằng 1.');
+            return;
+        }
+        let allProducts = JSON.parse(localStorage.getItem('products')) || [];
+        const productIndex = allProducts.findIndex(p => p.id === productId);
+        if (productIndex === -1) { alert('Lỗi: Không tìm thấy sản phẩm.'); return; }
+        const product = allProducts[productIndex];
+        if (product.stock < quantity) {
+            alert(`Rất tiếc, sản phẩm "${product.name}" chỉ còn ${product.stock} cái trong kho.`);
+            return;
+        }
+        const cartItem = {
+            id: product.id, name: product.name, price: product.price, 
+            quantity: quantity, img: product.img
+        };
+        const userCartKey = `cart_${user.email}`;
+        let cart = JSON.parse(localStorage.getItem(userCartKey)) || [];
+        const existingItemIndex = cart.findIndex(item => item.id === product.id);
+        if (existingItemIndex > -1) {
+            cart[existingItemIndex].quantity += quantity;
+        } else {
+            cart.push(cartItem);
+        }
+        localStorage.setItem(userCartKey, JSON.stringify(cart));
+        allProducts[productIndex].stock -= quantity;
+        localStorage.setItem('products', JSON.stringify(allProducts));
+        updateCartIconCount();
+        const stockSpan = document.getElementById('product-stock');
+        const quantityInput = document.getElementById('quantity');
+        if (stockSpan && quantityInput) {
+            stockSpan.textContent = `${allProducts[productIndex].stock} cái`;
+            quantityInput.max = allProducts[productIndex].stock;
+        }
+        if (redirect) {
+            window.location.href = 'cart.html';
+        } else {
+            alert(`Đã thêm ${quantity} sản phẩm "${product.name}" vào giỏ hàng thành công!`);
+        }
+    }
+    
+    function updateCartIconCount() {
+        const user = JSON.parse(localStorage.getItem('loggedInUser'));
+        if (!user) return;
+        const userCartKey = `cart_${user.email}`;
+        const cart = JSON.parse(localStorage.getItem(userCartKey)) || [];
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        const cartCountElement = document.getElementById('cart-count');
+        if (cartCountElement) {
+            cartCountElement.textContent = totalItems;
+            cartCountElement.style.display = totalItems > 0 ? 'inline-block' : 'none';
+        }
+    }
+
+    // --- Hàm render chính ---
+    document.addEventListener("DOMContentLoaded", () => {
+        const user = JSON.parse(localStorage.getItem('loggedInUser'));
+        if (user) {
+            document.getElementById('auth-section-desktop').innerHTML = `
+                <a href="my-orders.html" class="hover:text-yellow-400 transition">Đơn hàng của tôi</a>
+                <button onclick="logout()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md text-xs">Đăng xuất</button>
+            `;
+            window.logout = () => { localStorage.removeItem('loggedInUser'); window.location.href = 'index.html'; };
+        }
+        updateCartIconCount();
+        
+        const params = new URLSearchParams(window.location.search);
+        const productId = params.get("id");
+        const container = document.getElementById('product-detail-container');
+        
+        const formatCurrency = (number) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number);
+        
+        if (!productId) {
+            container.innerHTML = `<div class="text-center text-red-600 font-bold py-10">Lỗi: URL không hợp lệ.</div>`; return;
+        }
+        
+        const allProducts = JSON.parse(localStorage.getItem('products')) || [];
+        const categories = JSON.parse(localStorage.getItem('categories')) || [];
+        const product = allProducts.find(p => p.id === productId);
+
+        if (product) {
+            const category = categories.find(c => c.id === product.categoryId);
+            document.title = `${product.name} | linhkien4u`;
+            const basePrice = product.price;
+            const isFavorited = isProductInWishlist(product.id);
+            const isOutOfStock = product.stock <= 0;
+            const statusText = isOutOfStock ? 'Hết hàng' : 'Còn hàng';
+            const statusColor = isOutOfStock ? 'text-red-600' : 'text-green-600';
+            const disableButtons = isOutOfStock ? 'disabled opacity-50 cursor-not-allowed' : '';
+            
+            container.innerHTML = `
+                <div class="text-sm text-gray-500 mb-6">
+                    <a href="product.html" class="hover:text-blue-600">Sản Phẩm</a> / 
+                    <a href="product.html?type=${product.categoryId}" class="hover:text-blue-600">${category ? category.name : 'N/A'}</a> / 
+                    <span class="font-semibold text-gray-800">${product.name}</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <div><img src="${product.img || './images/placeholder.png'}" alt="${product.name}" class="w-full h-auto max-w-md mx-auto border rounded-lg shadow-sm"></div>
+                    <div>
+                        <div class="flex items-start justify-between gap-4">
+                            <h1 class="text-3xl font-bold product-title mb-4">${product.name}</h1>
+                            <button onclick="toggleWishlist(event, '${product.id}')" class="wishlist-btn p-2 rounded-full hover:bg-gray-100 transition ${isFavorited ? 'active' : ''}" title="Thêm vào danh sách yêu thích">
+                                <svg class="w-6 h-6 stroke-red-500 fill-transparent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+                            </button>
+                        </div>
+                        <div class="space-y-2 text-md mb-6 border-b pb-4">
+                            <p><span class="spec-label">Giá:</span> <strong class="text-2xl text-red-600">${formatCurrency(basePrice)}</strong> <span class="text-gray-500 text-sm">/ sản phẩm</span></p>
+                            <p id="subtotal-container" class="hidden"><span class="spec-label">Thành tiền:</span> <strong id="subtotal-price" class="text-red-600 text-xl"></strong></p>
+                            <p><span class="spec-label">Hãng Sản Xuất:</span> ${product.manufacturer || 'Đang cập nhật'}</p>
+                            <p><span class="spec-label">Tình Trạng:</span> <span id="product-status" class="font-semibold ${statusColor}">${statusText}</span></p>
+                            <p><span class="spec-label">Tồn kho:</span> <strong id="product-stock" class="text-blue-600">${product.stock} cái</strong></p>
+                        </div>
+                        <div class="prose max-w-none text-gray-700 mb-6"><p>${product.description || 'Chưa có mô tả.'}</p></div>
+                        <div class="mt-8 p-4 border border-gray-200 bg-gray-50 rounded-lg">
+                            <div class="flex items-center gap-4 mb-4">
+                                <label for="quantity" class="font-semibold whitespace-nowrap">Số lượng:</label>
+                                <input type="number" id="quantity" value="1" min="1" max="${product.stock}" class="w-24 border border-gray-400 text-center p-2 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" ${isOutOfStock ? 'disabled' : ''}>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <button id="add-to-cart-btn" class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-md hover:bg-blue-700 transition ${disableButtons}">Thêm vào giỏ</button>
+                                <button id="buy-now-btn" class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-4 rounded-md transition ${disableButtons}">Mua ngay</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            const quantityInput = document.getElementById('quantity');
+            const subtotalContainer = document.getElementById('subtotal-container');
+            const subtotalPriceEl = document.getElementById('subtotal-price');
+            const stockSpan = document.getElementById('product-stock');
+            
+            const initialStock = product.stock;
+
+            quantityInput.addEventListener('input', () => {
+                const quantity = parseInt(quantityInput.value) || 0;
+                
+                if (quantity > 1) {
+                    subtotalPriceEl.innerText = formatCurrency(quantity * basePrice);
+                    subtotalContainer.classList.remove('hidden');
+                } else {
+                    subtotalContainer.classList.add('hidden');
+                }
+
+                const remainingStock = initialStock - quantity;
+                
+                stockSpan.textContent = `${Math.max(0, remainingStock)} cái`;
+
+                if (remainingStock < 0) {
+                     stockSpan.classList.remove('text-blue-600');
+                     stockSpan.classList.add('text-red-600');
+                } else {
+                     stockSpan.classList.add('text-blue-600');
+                     stockSpan.classList.remove('text-red-600');
+                }
+            });
+
+            document.getElementById('add-to-cart-btn').addEventListener('click', () => handleAddToCart(product.id, parseInt(quantityInput.value), false));
+            document.getElementById('buy-now-btn').addEventListener('click', () => handleAddToCart(product.id, parseInt(quantityInput.value), true));
+        } else {
+            container.innerHTML = `<div class="text-center text-red-600 font-bold py-10">Sản phẩm không tồn tại.</div>`;
+        }
+    });
+  </script>
+</body>
+</html>

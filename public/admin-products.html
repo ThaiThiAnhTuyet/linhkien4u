@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Sản phẩm | linhkien4u Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #888; border-radius: 4px;}
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+    </style>
+    <script>
+        const user = JSON.parse(localStorage.getItem('loggedInUser'));
+        if (!user || user.role !== 'admin') {
+            alert('Bạn không có quyền truy cập trang này!');
+            window.location.href = 'login.html';
+        }
+    </script>
+</head>
+<body class="bg-gray-100">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-gray-800 text-white flex flex-col flex-shrink-0">
+            <div class="px-6 py-4 border-b border-gray-700">
+                <a href="admin.html" class="text-2xl font-bold">linhkien4u</a>
+                <span class="block text-sm text-yellow-400">Admin Panel</span>
+            </div>
+            <nav class="flex-1 px-4 py-4 space-y-2 overflow-y-auto">
+                <a href="admin.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-700 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M9.293 2.293a1 1 0 011.414 0l7 7A1 1 0 0117 11h-1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 00-1-1H9a1 1 0 00-1 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-6H3a1 1 0 01-.707-1.707l7-7z" clip-rule="evenodd" /></svg>
+                    <span>Bảng điều khiển</span>
+                </a>
+                <a href="admin-products.html" class="flex items-center gap-3 px-4 py-2 rounded-lg bg-gray-900 text-white font-semibold">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm3.293 2.293a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L7.586 10 5.293 7.707a1 1 0 010-1.414zM11 7a1 1 0 100 2h3a1 1 0 100-2h-3z" /></svg>
+                    <span>Quản lý sản phẩm</span>
+                </a>
+                <a href="admin-orders.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-700 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M5.5 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM16.5 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" /><path fill-rule="evenodd" d="M2 5a1 1 0 011-1h12.586a1 1 0 01.948.684l1.494 4.482A1 1 0 0117 10H4.414l-.32-1.921A1 1 0 015 7h10.438l-1.12-3.36a1 1 0 00-.949-.64H5.445L4.5 1.17A1 1 0 003.586 1H2a1 1 0 000 2h1.118l1.424 8.544a4 4 0 003.89 3.456h6.136a4 4 0 003.89-3.456l.328-1.968A1 1 0 0017 12h-2.145a1 1 0 01-.97-.763l-1.494-4.482A1 1 0 0011.586 6H6.872l-.32 1.921a1 1 0 01-1.96.638l.49-.294.001-.001.001-.001z" clip-rule="evenodd" /></svg>
+                    <span>Quản lý đơn hàng</span>
+                </a>
+                <a href="admin-users.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-700 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10 8a3 3 0 100-6 3 3 0 000 6zM3.465 14.493a1.23 1.23 0 00.41 1.412A9.957 9.957 0 0010 18c2.31 0 4.438-.784 6.131-2.095a1.23 1.23 0 00.41-1.412A9.957 9.957 0 0010 12c-2.31 0-4.438.784-6.131 2.095z" /></svg>
+                    <span>Quản lý người dùng</span>
+                </a>
+                 <a href="admin-vouchers.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-700 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5 2a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V4a2 2 0 00-2-2H5zm0 2h10v12H5V4zm5 2a1 1 0 011 1v2a1 1 0 11-2 0V7a1 1 0 011-1zm-3 4a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd" /></svg>
+                    <span>Quản lý Mã giảm giá</span>
+                </a>
+            </nav>
+            <div class="px-6 py-4 mt-auto border-t border-gray-700">
+                <a href="index.html" target="_blank" class="flex items-center gap-3 text-sm hover:text-yellow-400 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 18h-8.5A2.25 2.25 0 012 15.75v-8.5A2.25 2.25 0 014.25 5h4a.75.75 0 010 1.5h-4z" clip-rule="evenodd" /><path fill-rule="evenodd" d="M6.194 12.852a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L7.25 11.233 3.72 7.704a.75.75 0 00-1.06 1.06l3.5 3.5.034.034z" clip-rule="evenodd" /></svg>
+                    <span>Xem Trang Web</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col">
+            <header class="bg-white shadow-sm p-4 flex justify-between items-center">
+                <h1 class="text-2xl font-semibold text-gray-800">Quản lý Sản phẩm</h1>
+                <div id="admin-info" class="text-sm text-gray-600"></div>
+            </header>
+            
+            <main class="flex-1 p-6 lg:p-8 overflow-y-auto">
+                <div class="flex flex-wrap gap-4 mb-6">
+                    <button id="add-product-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md flex items-center gap-2">
+                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-11.25a.75.75 0 00-1.5 0v2.5h-2.5a.75.75 0 000 1.5h2.5v2.5a.75.75 0 001.5 0v-2.5h2.5a.75.75 0 000-1.5h-2.5v-2.5z" clip-rule="evenodd" /></svg>
+                        <span>Thêm sản phẩm mới</span>
+                    </button>
+                    <button id="manage-categories-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg shadow-md flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M5.5 3A2.5 2.5 0 003 5.5v2.879a.75.75 0 00.22.53l6.102 6.101a.75.75 0 001.06 0l3.904-3.904a.75.75 0 000-1.06L8.182 3.97a.75.75 0 00-.53-.22H5.5zM6 5.5a.5.5 0 01.5-.5h.5a.5.5 0 01.5.5v.5a.5.5 0 01-.5.5h-.5a.5.5 0 01-.5-.5v-.5z" clip-rule="evenodd" /></svg>
+                        <span>Quản lý Danh mục</span>
+                    </button>
+                    <button id="manage-brands-btn" class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-md flex items-center gap-2">
+                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M10.533 2.29a.75.75 0 00-1.066 0l-7 7.003a.75.75 0 00.533 1.282h1.306v6.675a.75.75 0 00.75.75h3.404a.75.75 0 00.75-.75v-2.675a.75.75 0 01.75-.75h2.666a.75.75 0 01.75.75v2.675a.75.75 0 00.75.75h3.405a.75.75 0 00.75-.75V10.575h1.305a.75.75 0 00.534-1.282l-7-7.003z" clip-rule="evenodd" /></svg>
+                        <span>Quản lý Hãng</span>
+                    </button>
+                </div>
+
+                <!-- Product Table -->
+                <div class="bg-white rounded-lg shadow-lg overflow-x-auto">
+                    <table class="w-full text-sm text-left text-gray-600">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-200">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">Sản phẩm</th>
+                                <th scope="col" class="px-6 py-3">Danh mục</th>
+                                <th scope="col" class="px-6 py-3">Hãng</th>
+                                <th scope="col" class="px-6 py-3 text-right">Giá</th>
+                                <th scope="col" class="px-6 py-3 text-center">Tồn kho</th>
+                                <th scope="col" class="px-6 py-3 text-center">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="product-list" class="divide-y divide-gray-200"></tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <!-- Product Form Modal -->
+    <div id="product-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-3xl max-h-[90vh] flex flex-col">
+            <div class="p-5 border-b flex justify-between items-center">
+                <h3 id="form-title" class="text-2xl font-bold text-gray-800"></h3>
+                <button class="close-modal-btn text-gray-400 hover:text-gray-700">×</button>
+            </div>
+            <form id="product-form" class="flex-1 overflow-y-auto p-6 space-y-4">
+                <input type="hidden" id="product-id">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="product-sku" class="block text-sm font-medium text-gray-700">Mã sản phẩm (SKU)</label>
+                        <input type="text" id="product-sku" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" required>
+                    </div>
+                    <div>
+                        <label for="product-name" class="block text-sm font-medium text-gray-700">Tên sản phẩm</label>
+                        <input type="text" id="product-name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" required>
+                    </div>
+                    <div>
+                        <label for="product-category" class="block text-sm font-medium text-gray-700">Danh mục</label>
+                        <select id="product-category" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" required></select>
+                    </div>
+                    <div>
+                        <label for="product-brand" class="block text-sm font-medium text-gray-700">Hãng sản xuất</label>
+                        <select id="product-brand" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" required></select>
+                    </div>
+                    <div>
+                        <label for="product-price" class="block text-sm font-medium text-gray-700">Giá (VNĐ)</label>
+                        <input type="number" id="product-price" min="0" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" required>
+                    </div>
+                    <div>
+                        <label for="product-stock" class="block text-sm font-medium text-gray-700">Số lượng tồn kho</label>
+                        <input type="number" id="product-stock" min="0" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" required>
+                    </div>
+                </div>
+                <div>
+                    <label for="product-desc" class="block text-sm font-medium text-gray-700">Mô tả ngắn</label>
+                    <textarea id="product-desc" rows="2" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"></textarea>
+                </div>
+                <div>
+                     <label for="product-datasheet" class="block text-sm font-medium text-gray-700">Link Datasheet (tùy chọn)</label>
+                     <input type="url" id="product-datasheet" placeholder="https://example.com/datasheet.pdf" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                </div>
+                <div>
+                    <label for="product-image" class="block text-sm font-medium text-gray-700">Link ảnh sản phẩm</label>
+                    <input type="text" id="product-image-url" placeholder="https://.../image.jpg hoặc ./images/product.jpg" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                    <img id="image-preview" src="" alt="Xem trước ảnh" class="mt-4 h-32 hidden rounded-md object-contain border p-1"/>
+                </div>
+            </form>
+            <div class="p-5 border-t bg-gray-50 flex justify-end gap-4">
+                <button type="button" class="close-modal-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg">Hủy</button>
+                <button type="submit" form="product-form" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg">Lưu sản phẩm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category & Brand Management Modal -->
+    <div id="management-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-lg">
+            <div class="p-5 border-b flex justify-between items-center">
+                <h3 id="management-title" class="text-2xl font-bold text-gray-800"></h3>
+                <button class="close-modal-btn text-gray-400 hover:text-gray-700">×</button>
+            </div>
+            <div class="p-6">
+                <form id="management-form" class="flex gap-4 mb-4">
+                    <input type="text" id="management-input" placeholder="Nhập tên mới..." class="flex-grow px-3 py-2 border border-gray-300 rounded-md shadow-sm" required>
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg flex items-center gap-2">
+                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg>
+                        <span>Thêm</span>
+                    </button>
+                </form>
+                <div id="management-list" class="max-h-64 overflow-y-auto border rounded-md p-2 space-y-2"></div>
+            </div>
+            <div class="p-5 border-t bg-gray-50 flex justify-end">
+                <button type="button" class="close-modal-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg">Đóng</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        let products = [], categories = [], brands = [];
+
+        const fetchData = () => {
+            products = JSON.parse(localStorage.getItem('products')) || [];
+            categories = JSON.parse(localStorage.getItem('categories')) || [];
+            brands = JSON.parse(localStorage.getItem('brands')) || [];
+
+            if (products.length === 0) {
+                alert('Dữ liệu sản phẩm trống. Vui lòng truy cập trang Bảng điều khiển (admin.html) trước để hệ thống tự động khởi tạo dữ liệu.');
+            }
+        };
+
+        const saveData = () => {
+            localStorage.setItem('products', JSON.stringify(products));
+            localStorage.setItem('categories', JSON.stringify(categories));
+            localStorage.setItem('brands', JSON.stringify(brands));
+        };
+        
+        const initializeApp = () => {
+            fetchData();
+            renderProducts();
+        };
+
+        const productListEl = document.getElementById('product-list');
+        const productModal = document.getElementById('product-modal');
+        const productForm = document.getElementById('product-form');
+        const managementModal = document.getElementById('management-modal');
+        const managementForm = document.getElementById('management-form');
+        const adminInfoEl = document.getElementById('admin-info');
+
+        const renderProducts = () => {
+            productListEl.innerHTML = '';
+            if (products.length === 0) {
+                productListEl.innerHTML = `<tr><td colspan="6" class="text-center py-10 text-gray-500">Chưa có sản phẩm nào. Vui lòng vào trang Bảng điều khiển để khởi tạo dữ liệu.</td></tr>`;
+                return;
+            }
+            products.sort((a, b) => a.name.localeCompare(b.name)).forEach(p => {
+                const category = categories.find(c => c.id === p.categoryId);
+                const brand = brands.find(b => b.id === p.brandId);
+                const priceFormatted = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(p.price || 0);
+                const stockColor = p.stock < 10 ? 'bg-red-100 text-red-800' : (p.stock < 50 ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800');
+                
+                productListEl.innerHTML += `
+                    <tr class="hover:bg-gray-50 align-middle">
+                        <td class="px-6 py-4"><div class="flex items-center gap-4"><img src="${p.img || 'https://via.placeholder.com/80'}" alt="${p.name}" class="w-16 h-16 object-contain rounded border p-1 bg-white"><div><div class="font-semibold text-gray-900">${p.name}</div><div class="text-xs text-gray-500">SKU: ${p.id}</div></div></div></td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 text-xs font-medium rounded-full bg-indigo-100 text-indigo-800">${category ? category.name : 'N/A'}</span></td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 text-xs font-medium rounded-full bg-teal-100 text-teal-800">${brand ? brand.name : 'N/A'}</span></td>
+                        <td class="px-6 py-4 text-right font-medium text-gray-800">${priceFormatted}</td>
+                        <td class="px-6 py-4 text-center"><span class="px-3 py-1 text-sm font-semibold rounded-md ${stockColor}">${p.stock}</span></td>
+                        <td class="px-6 py-4 text-center space-x-2">
+                            <button onclick="handleEditProduct('${p.id}')" class="font-medium text-blue-600 hover:text-blue-800 p-1" title="Sửa"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M5.433 13.917l1.262-3.155A4 4 0 017.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 01-.65-.65z" /><path d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0010 3H4.75A2.75 2.75 0 002 5.75v9.5A2.75 2.75 0 004.75 18h9.5A2.75 2.75 0 0017 15.25V10a.75.75 0 00-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5z" /></svg></button>
+                            <button onclick="handleDeleteProduct('${p.id}')" class="font-medium text-red-600 hover:text-red-800 p-1" title="Xóa"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.58.22-2.365.468a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25-.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z" clip-rule="evenodd" /></svg></button>
+                        </td>
+                    </tr>
+                `;
+            });
+        };
+
+        const populateSelect = (selectId, data, placeholder) => {
+            const selectEl = document.getElementById(selectId);
+            selectEl.innerHTML = `<option value="">-- ${placeholder} --</option>`;
+            data.sort((a, b) => a.name.localeCompare(b.name)).forEach(item => {
+                selectEl.innerHTML += `<option value="${item.id}">${item.name}</option>`;
+            });
+        };
+
+        const openModal = (modal) => modal.classList.remove('hidden');
+        const closeModal = (modal) => modal.classList.add('hidden');
+        document.querySelectorAll('.close-modal-btn').forEach(btn => btn.addEventListener('click', () => {
+            closeModal(productModal);
+            closeModal(managementModal);
+        }));
+        
+        document.getElementById('add-product-btn').addEventListener('click', () => {
+            productForm.reset();
+            document.getElementById('form-title').textContent = 'Thêm sản phẩm mới';
+            document.getElementById('product-id').value = '';
+            document.getElementById('image-preview').src = '';
+            document.getElementById('image-preview').classList.add('hidden');
+            document.getElementById('product-sku').readOnly = false;
+            populateSelect('product-category', categories, 'Chọn danh mục');
+            populateSelect('product-brand', brands, 'Chọn hãng sản xuất');
+            openModal(productModal);
+        });
+        
+        window.handleEditProduct = (id) => {
+            const p = products.find(prod => prod.id === id);
+            if (!p) return;
+            document.getElementById('form-title').textContent = 'Chỉnh sửa sản phẩm';
+            populateSelect('product-category', categories, 'Chọn danh mục');
+            populateSelect('product-brand', brands, 'Chọn hãng sản xuất');
+            document.getElementById('product-id').value = p.id;
+            document.getElementById('product-sku').value = p.id;
+            document.getElementById('product-sku').readOnly = true;
+            document.getElementById('product-name').value = p.name;
+            document.getElementById('product-category').value = p.categoryId;
+            document.getElementById('product-brand').value = p.brandId;
+            document.getElementById('product-price').value = p.price;
+            document.getElementById('product-stock').value = p.stock;
+            document.getElementById('product-desc').value = p.desc || '';
+            document.getElementById('product-datasheet').value = p.datasheet || '';
+            document.getElementById('product-image-url').value = p.img || '';
+            const imagePreview = document.getElementById('image-preview');
+            if (p.img) { imagePreview.src = p.img; imagePreview.classList.remove('hidden'); } 
+            else { imagePreview.classList.add('hidden'); }
+            openModal(productModal);
+        };
+
+        window.handleDeleteProduct = (id) => {
+            const p = products.find(prod => prod.id === id);
+            if (!p) return;
+            if (confirm(`Bạn có chắc chắn muốn xóa sản phẩm "${p.name}"?`)) {
+                products = products.filter(prod => prod.id !== id);
+                saveData();
+                renderProducts();
+            }
+        };
+        
+        productForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const id = document.getElementById('product-id').value;
+            const sku = document.getElementById('product-sku').value.trim();
+            if (!id && products.some(p => p.id === sku)) {
+                alert('Lỗi: Mã sản phẩm (SKU) đã tồn tại. Vui lòng chọn một mã khác.');
+                return;
+            }
+            const productData = {
+                id: id || sku, name: document.getElementById('product-name').value.trim(),
+                categoryId: document.getElementById('product-category').value, brandId: document.getElementById('product-brand').value,
+                price: parseInt(document.getElementById('product-price').value), stock: parseInt(document.getElementById('product-stock').value),
+                desc: document.getElementById('product-desc').value.trim(), datasheet: document.getElementById('product-datasheet').value.trim(),
+                img: document.getElementById('product-image-url').value.trim(),
+                priceTiers: [{ range: "1+", price: `${new Intl.NumberFormat('vi-VN').format(parseInt(document.getElementById('product-price').value))}đ` }]
+            };
+            if (id) { products[products.findIndex(p => p.id === id)] = productData; }
+            else { products.unshift(productData); }
+            saveData();
+            renderProducts();
+            closeModal(productModal);
+        });
+
+        document.getElementById('product-image-url').addEventListener('input', function() {
+            const preview = document.getElementById('image-preview');
+            if (this.value) { preview.src = this.value; preview.classList.remove('hidden'); } 
+            else { preview.classList.add('hidden'); }
+        });
+        
+        let currentManagementType = null;
+        const openManagementModal = (type) => {
+            currentManagementType = type;
+            const data = type === 'categories' ? categories : brands;
+            const title = type === 'categories' ? 'Quản lý Danh mục' : 'Quản lý Hãng sản xuất';
+            document.getElementById('management-title').textContent = title;
+            managementForm.reset();
+            renderManagementList(data);
+            openModal(managementModal);
+        };
+
+        const renderManagementList = (data) => {
+            const listEl = document.getElementById('management-list');
+            listEl.innerHTML = '';
+            if (data.length === 0) {
+                listEl.innerHTML = `<p class="text-center text-gray-500 p-4">Chưa có mục nào.</p>`;
+                return;
+            }
+            data.sort((a, b) => a.name.localeCompare(b.name)).forEach(item => {
+                listEl.innerHTML += `
+                    <div class="flex justify-between items-center p-2 bg-gray-50 rounded hover:bg-gray-100">
+                        <span class="text-sm text-gray-800">${item.name}</span>
+                        <button onclick="handleDeleteItem('${item.id}')" class="text-red-500 hover:text-red-700 p-1 rounded-full" title="Xóa ${item.name}">
+                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.58.22-2.365.468a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25-.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z" clip-rule="evenodd" /></svg>
+                        </button>
+                    </div>
+                `;
+            });
+        };
+
+        document.getElementById('manage-categories-btn').addEventListener('click', () => openManagementModal('categories'));
+        document.getElementById('manage-brands-btn').addEventListener('click', () => openManagementModal('brands'));
+        
+        managementForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const input = document.getElementById('management-input');
+            const name = input.value.trim();
+            if (!name) return;
+            const dataArray = currentManagementType === 'categories' ? categories : brands;
+            if (dataArray.some(item => item.name.toLowerCase() === name.toLowerCase())) {
+                alert('Tên này đã tồn tại!');
+                return;
+            }
+            const prefix = currentManagementType === 'categories' ? 'cat' : 'brand';
+            dataArray.push({ id: `${prefix}-${Date.now()}`, name });
+            saveData();
+            renderManagementList(dataArray);
+            input.value = '';
+            input.focus();
+        });
+
+        window.handleDeleteItem = (id) => {
+            const dataArray = currentManagementType === 'categories' ? categories : brands;
+            const itemToDelete = dataArray.find(item => item.id === id);
+            if (!itemToDelete) return;
+            const keyToCheck = currentManagementType === 'categories' ? 'categoryId' : 'brandId';
+            const typeName = currentManagementType === 'categories' ? 'danh mục' : 'hãng';
+            const isUsed = products.some(p => p[keyToCheck] === id);
+            if (isUsed) {
+                alert(`Không thể xóa ${typeName} "${itemToDelete.name}" vì đang có sản phẩm sử dụng.\n\nVui lòng thay đổi ${typeName} của các sản phẩm liên quan trước khi xóa.`);
+                return;
+            }
+            if(confirm(`Bạn có chắc chắn muốn xóa ${typeName} "${itemToDelete.name}"?`)) {
+                if (currentManagementType === 'categories') {
+                    categories = categories.filter(item => item.id !== id);
+                } else {
+                    brands = brands.filter(item => item.id !== id);
+                }
+                saveData();
+                renderManagementList(currentManagementType === 'categories' ? categories : brands);
+            }
+        };
+
+        // Luồng khởi tạo chương trình chính
+        if(user) {
+            adminInfoEl.textContent = `Xin chào, ${user.fullname || user.email}`;
+        }
+        initializeApp();
+    });
+    </script>
+</body>
+</html>

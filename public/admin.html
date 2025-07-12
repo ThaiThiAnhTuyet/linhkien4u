@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bảng điều khiển | linhkien4u Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+        if (!loggedInUser || loggedInUser.role !== 'admin') {
+            alert('Bạn không có quyền truy cập trang này!');
+            window.location.href = 'login.html';
+        }
+    </script>
+</head>
+<body class="bg-gray-100 font-sans">
+    
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-gray-800 text-white flex flex-col">
+            <div class="px-6 py-4 border-b border-gray-700">
+                <a href="admin.html" class="text-2xl font-bold">linhkien4u</a>
+                <span class="block text-sm text-yellow-400">Admin Panel</span>
+            </div>
+            <nav class="flex-1 px-4 py-4 space-y-2">
+                <a href="admin.html" class="flex items-center gap-3 px-4 py-2 rounded-lg bg-gray-900 text-white font-semibold">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                    <span>Bảng điều khiển</span>
+                </a>
+                <a href="admin-products.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-700 transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                    <span>Quản lý sản phẩm</span>
+                </a>
+                <a href="admin-orders.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-700 transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                    <span>Quản lý đơn hàng</span>
+                </a>
+                <a href="admin-users.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-700 transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M15 21a6 6 0 00-9-5.197m0 0A10.004 10.004 0 0021 10.5M5 12a4 4 0 110-8 4 4 0 010 8z"></path></svg>
+                    <span>Quản lý người dùng</span>
+                </a>
+                 <a href="admin-vouchers.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-700 transition">
+                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7a1 1 0 011.414-1.414L9 14.586V3a1 1 0 112 0v11.586l4.293-4.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                    </svg>
+                    <span>Quản lý Mã giảm giá</span>
+                </a>
+                <a href="admin-reports.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-700 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                        <path d="M15.5 2A2.5 2.5 0 0013 4.5v11A2.5 2.5 0 0015.5 18h.75a.75.75 0 000-1.5h-.75a1 1 0 01-1-1v-11a1 1 0 011-1h.75a.75.75 0 000-1.5h-.75z" />
+                        <path d="M9.5 2A2.5 2.5 0 007 4.5v7A2.5 2.5 0 009.5 14h.75a.75.75 0 000-1.5h-.75a1 1 0 01-1-1v-7a1 1 0 011-1h.75a.75.75 0 000-1.5h-.75z" />
+                        <path d="M3.5 2A2.5 2.5 0 001 4.5v3A2.5 2.5 0 003.5 10h.75a.75.75 0 000-1.5h-.75a1 1 0 01-1-1v-3a1 1 0 011-1h.75a.75.75 0 000-1.5h-.75z" />
+                    </svg>
+                    <span>Báo cáo</span>
+                </a>
+                <a href="admin-chat.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-700 transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 5.523-4.477 10-10 10S1 17.523 1 12 5.477 2 11 2s10 4.477 10 10z"></path></svg>
+                    <span>Hỗ trợ trực tuyến</span>
+                </a>
+            </nav>
+            <div class="px-6 py-4 mt-auto border-t border-gray-700">
+                <a href="index.html" class="flex items-center gap-3 text-sm hover:text-yellow-400 transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                    <span>Xem Trang Web</span>
+                </a>
+            </div>
+        </aside>
+        <div class="flex-1 flex flex-col">
+            <header class="bg-white shadow-sm p-4 flex justify-between items-center">
+                <h1 class="text-2xl font-semibold text-gray-800">Bảng điều khiển</h1>
+                <div class="flex items-center gap-4">
+                    <span id="admin-greeting" class="text-gray-700">Chào, <strong class="font-medium">Admin</strong>!</span>
+                    <button id="logout-btn" class="bg-red-500 hover:bg-red-600 text-white text-sm font-bold py-2 px-3 rounded-lg transition">Đăng xuất</button>
+                </div>
+            </header>
+            <main class="flex-1 p-6 lg:p-8 overflow-y-auto">
+                <section>
+                    <h2 class="text-xl font-bold text-gray-700 mb-4">Tổng quan</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="bg-white p-6 rounded-xl shadow-lg flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Tổng sản phẩm</p>
+                                <p id="product-count" class="text-3xl font-bold text-blue-600">0</p>
+                            </div>
+                            <div class="bg-blue-100 p-3 rounded-full">
+                                <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-lg flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Tổng số đơn hàng</p>
+                                <p id="total-order-count" class="text-3xl font-bold text-green-600">0</p>
+                            </div>
+                            <div class="bg-green-100 p-3 rounded-full">
+                                <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-lg flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Đơn hàng cần xử lý</p>
+                                <p id="new-order-count" class="text-3xl font-bold text-yellow-500">0</p>
+                            </div>
+                            <div class="bg-yellow-100 p-3 rounded-full">
+                                <svg class="w-8 h-8 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-lg flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Người dùng</p>
+                                <p id="user-count" class="text-3xl font-bold text-purple-600">0</p>
+                            </div>
+                            <div class="bg-purple-100 p-3 rounded-full">
+                                <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M15 21a6 6 0 00-9-5.197m0 0A10.004 10.004 0 0021 10.5M5 12a4 4 0 110-8 4 4 0 010 8z"></path></svg>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="mt-8">
+                    <h2 class="text-xl font-bold text-gray-700 mb-4">Chức năng quản lý</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <a href="admin-products.html" class="block bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+                            <h3 class="text-lg font-bold text-gray-800">Quản lý Sản phẩm</h3>
+                            <p class="mt-2 text-sm text-gray-600">Thêm, sửa, xóa và xem danh sách tất cả các linh kiện đang bán trên website.</p>
+                        </a>
+                        <a href="admin-orders.html" class="block bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+                            <h3 class="text-lg font-bold text-gray-800">Quản lý Đơn hàng</h3>
+                            <p class="mt-2 text-sm text-gray-600">Xem và cập nhật trạng thái các đơn hàng của khách.</p>
+                        </a>
+                        <a href="admin-users.html" class="block bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+                            <h3 class="text-lg font-bold text-gray-800">Quản lý Người dùng</h3>
+                            <p class="mt-2 text-sm text-gray-600">Xem, khóa/mở khóa và xóa tài khoản người dùng.</p>
+                        </a>
+                        <a href="admin-vouchers.html" class="block bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+                            <h3 class="text-lg font-bold text-gray-800">Quản lý Mã giảm giá</h3>
+                            <p class="mt-2 text-sm text-gray-600">Tạo và quản lý các mã khuyến mãi, giảm giá cho khách hàng.</p>
+                        </a>
+                        <a href="admin-reports.html" class="block bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+                            <h3 class="text-lg font-bold text-gray-800">Báo cáo & Thống kê</h3>
+                            <p class="mt-2 text-sm text-gray-600">Xem báo cáo doanh thu, sản phẩm bán chạy và khách hàng tiềm năng.</p>
+                        </a>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // --- BẮT ĐẦU NGUỒN DỮ LIỆU CHÍNH ---
+        // Đây là nguồn dữ liệu sản phẩm mới nhất, được sao chép từ product.html
+        const productCatalog = [ 
+            { mainCategoryTitle: "ĐẦU NỐI & CỔNG KẾT NỐI", subCategories: [ { type: "ket-noi", title: "Cổng mạng RJ45", products: [ { id: "HR911105A", name: "HR911105A Cổng mạng Ethernet RJ45", priceTiers: [{ range: "1+", price: "15.000đ" }], img: "./images/Product/SanPhamNoiBat/HR911105A.jpg" } ] } ] },
+            { mainCategoryTitle: "LINH KIỆN BÁN DẪN", subCategories: [ { type: "transistor-bjt", title: "Transistor BJT", products: [ { id: "a1013", name: "A1013", priceTiers: [{ range: "1+", price: "1.000đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/Transistor BJT/A1013.jpg" }, { id: "d718", name: "D718", priceTiers: [{ range: "1+", price: "9.000đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/Transistor BJT/D718.jpg" }, { id: "b688", name: "B688", priceTiers: [{ range: "1+", price: "9.000đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/Transistor BJT/B688.jpg" }, { id: "c5200", name: "2SC5200 (C5200)", priceTiers: [{ range: "1+", price: "30.000đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/Transistor BJT/2SC5200 (C5200).jpg" } ] }, { type: "mosfet", title: "MOSFET", products: [ { id: "IRF9540", name: "IRF9540", priceTiers: [{ range: "1+", price: "11.500đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/MOSFET/IRF9540.png" }, { id: "6N60A", name: "6N60A", priceTiers: [{ range: "1+", price: "14.000đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/MOSFET/6N60A.jpg" }, { id: "AOD1N60", name: "AOD1N60", priceTiers: [{ range: "1+", price: "8.500đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/MOSFET/AOD1N60.jpg" }, { id: "W14NK50Z", name: "W14NK50Z", priceTiers: [{ range: "1+", price: "39.000đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/MOSFET/W14NK50Z.jpg" }, { id: "2SK2369", name: "2SK2369", priceTiers: [{ range: "1+", price: "14.000đ" }], img: "./images/Product/SanPhamNoiBat/2SK2369.jpg" } ] }, { type: "igbt", title: "IGBT", products: [ { id: "FGA25N120", name: "FGA25N120", priceTiers: [{ range: "1+", price: "29.000đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/IGBT/FGA25N120.jpg" }, { id: "H20R1203", name: "H20R1203", priceTiers: [{ range: "1+", price: "50.000đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/IGBT/H20R1203.jpg" } ] } ] }, { mainCategoryTitle: "CẢM BIẾN (SENSORS)", subCategories: [ { type: "cam-bien-nhiet-do", title: "Cảm biến nhiệt độ", products: [ { id: "DS18B20", name: "DS18B20", priceTiers: [{ range: "1+", price: "26.000đ" }], img: "./images/Product/CẢM BIẾN (SENSORS)/Cảm biến nhiệt độ/DS18B20.png" } ] }, { type: "cam-bien-pir", title: "Cảm biến chuyển động (PIR)", products: [ { id: "D203B", name: "D203B", priceTiers: [{ range: "1+", price: "25.000đ" }], img: "./images/Product/CẢM BIẾN (SENSORS)/Cảm biến chuyển động/D203B.png" } ] }, { type: "cam-bien-mau-sac", title: "Cảm biến màu sắc", products: [ { id: "TCS230", name: "TTCS230", priceTiers: [{ range: "1+", price: "65.000đ" }], img: "./images/Product/CẢM BIẾN (SENSORS)/Cảm biến màu sắc/TCS230.jpg" } ] } ] }, { mainCategoryTitle: "LINH KIỆN CÔNG SUẤT - NGUỒN", subCategories: [ { type: "ic-nguon", title: "IC Nguồn", products: [ { id: "LM317", name: "LM317", priceTiers: [{ range: "1+", price: "4.000đ" }], img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/IC Nguồn/LM317.png" }, { id: "78L05", name: "78L05", priceTiers: [{ range: "1+", price: "5.000đ" }], img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/IC Nguồn/78L05.jpg" }, { id: "LM350K", name: "LM350K", priceTiers: [{ range: "1+", price: "60.000đ" }], img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/IC Nguồn/LM350K.png" }, { id: "LM2575-0.5BU", name: "LM2575-0.5BU", priceTiers: [{ range: "1+", price: "25.000đ" }], img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/IC Nguồn/LM2575-0.5BU.jpg" } ] }, { type: "module-cong-suat", title: "Module Công suất", products: [ { id: "PM50CLA060", name: "PM50CLA060", priceTiers: [{ range: "1+", price: "3.200.000đ" }], img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/Module Công suất/PM50CLA060.png" }, { id: "PM200RSA060", name: "PM200RSA060", priceTiers: [{ range: "1+", price: "7.500.000đ" }], img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/Module Công suất/PM200RSA060.png" }, { id: "FSBF10CH60B", name: "FSBF10CH60B", priceTiers: [{ range: "1+", price: "800.000đ" }], img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/Module Công suất/FSBF10CH60B.png" }, { id: "SKKT26/12D", name: "SKKT26/12D", priceTiers: [{ range: "1+", price: "490.000đ" }], img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/Module Công suất/SKKT26_12D.jpg" } ] }, { type: "ics-do-sai", title: "ICs Dò sai", products: [ { id: "TL431", name: "TL431", priceTiers: [{ range: "1+", price: "3.000đ" }], img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/ICs Dò sai/TL431.png" } ] } ] }, { mainCategoryTitle: "BỘ NGUỒN (ADAPTER)", subCategories: [ { type: "adapter", title: "Bộ nguồn (Adapter)", products: [ { id: "Bộ nguồn 5V - 1A", name: "Bộ nguồn 5V - 1A", priceTiers: [{ range: "1+", price: "45.000đ" }], img: "./images/Product/BỘ NGUỒN (ADAPTER) - BIẾN ÁP/Bộ nguồn (Adapter)/Bộ nguồn 5V - 1A.jpg" }, { id: "Bộ nguồn 12V - 1A", name: "Bộ nguồn 12V - 1A", priceTiers: [{ range: "1+", price: "52.000đ" }], img: "./images/Product/BỘ NGUỒN (ADAPTER) - BIẾN ÁP/Bộ nguồn (Adapter)/Bộ nguồn 12V - 1A.jpg" } ] } ] }, { mainCategoryTitle: "ĐIỆN TRỞ (RESISTORS)", subCategories: [ { type: "resistor-0603", title: "Resistors SMD 0603", products: [ { id: "1Ω - 1% (gói10pcs)", name: "1Ω - 1% (gói10pcs)", priceTiers: [{ range: "1+", price: "1.200đ" }], img: "./images/Product/ĐIỆN TRỞ (RESISTORS)/Resistors SMD 0603/1Ω.png" }, { id: "1Ω -5% (gói10pcs)", name: "1Ω -5% (gói10pcs)", priceTiers: [{ range: "1+", price: "1.000đ" }], img: "./images/Product/ĐIỆN TRỞ (RESISTORS)/Resistors SMD 0603/1Ω.png" } ] }, { type: "resistor-3w", title: "Điện trở 3W", products: [ { id: "1Ω", name: "1Ω", priceTiers: [{ range: "1+", price: "50đ" }], img: "./images/Product/ĐIỆN TRỞ (RESISTORS)/Điện trở 3W/1Ω.jpg" } ] }, { type: "resistor-thanh", title: "Điện trở thanh", products: [ { id: "Điện trở thanh 1K", name: "Điện trở thanh 1K", priceTiers: [{ range: "1+", price: "2.000đ" }], img: "./images/Product/ĐIỆN TRỞ (RESISTORS)/Điện trở thanh/Điện trở thanh 1K.png" } ] } ] }, { mainCategoryTitle: "TỤ ĐIỆN (CAPACITORS)", subCategories: [ { type: "tu-dien", title: "Tụ điện", products: [ { id: "472-1KV", name: "472-1KV", priceTiers: [{ range: "1+", price: "250đ" }], img: "./images/Product/TỤ ĐIỆN (CAPACITORS)/Tụ điện/472-1KV.jpg" }, { id: "Tụ hóa 1µF/16V", name: "Tụ hóa 1µF/16V", priceTiers: [{ range: "1+", price: "300đ" }], img: "./images/Product/TỤ ĐIỆN (CAPACITORS)/Tụ điện/Tụ hóa 1µF_16V.jpg" } ] }, { type: "tu-dien-smd", title: "Tụ điện SMD (dán)", products: [ { id: "tụ Aluminum 100uF/16V", name: "tụ Aluminum 100uF/16V", priceTiers: [{ range: "1+", price: "1.500đ" }], img: "./images/Product/TỤ ĐIỆN (CAPACITORS)/Tụ điện SMD (dán)/tụ Aluminum 100uF_16V.png" } ] }, { type: "nichicon", title: "Thương hiệu Nichicon", products: [ { id: "Tụ 47uF 16V", name: "Tụ 47uF 16V", priceTiers: [{ range: "1+", price: "2.000đ" }], img: "./images/Product/TỤ ĐIỆN (CAPACITORS)/Thương hiệu Nichicon/Tụ 47uF 16V.jpg" } ] } ] }, 
+        ];
+
+        // Hàm xử lý và lưu dữ liệu vào Local Storage
+        function initializeAndStoreMasterData() {
+            const parsePrice = (s) => (s && typeof s === 'string') ? parseInt(s.replace(/[\.đ₫,]/g, '')) : 0;
+            const allProducts = productCatalog.flatMap(mainCat => 
+                mainCat.subCategories.flatMap(subCat => 
+                    subCat.products.map(p => ({ 
+                        ...p, 
+                        price: parsePrice(p.priceTiers[0].price), 
+                        category: subCat.title, 
+                        mainCategory: mainCat.mainCategoryTitle, 
+                        type: subCat.type,
+                        // Thêm các thông tin mặc định nếu thiếu
+                        stock: Math.floor(Math.random() * 100) + 20,
+                        manufacturer: 'Chưa xác định',
+                        status: 'Còn hàng',
+                        description: 'Chưa có mô tả chi tiết cho sản phẩm này.'
+                    }))
+                )
+            );
+            
+            const categories = [...new Set(allProducts.map(p => p.category))].sort().map(catName => ({
+                id: allProducts.find(p => p.category === catName).type,
+                name: catName
+            }));
+            
+            localStorage.setItem('products', JSON.stringify(allProducts));
+            localStorage.setItem('categories_full', JSON.stringify(productCatalog)); // Lưu cấu trúc đầy đủ
+            localStorage.setItem('categories', JSON.stringify(categories));
+        }
+        // --- KẾT THÚC NGUỒN DỮ LIỆU CHÍNH ---
+
+
+        // --- CODE GỐC CỦA TRANG ADMIN ---
+        const updateDashboardUI = () => {
+            const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+            if (loggedInUser && loggedInUser.fullname) {
+                document.getElementById('admin-greeting').innerHTML = `Chào, <strong class="font-medium">${loggedInUser.fullname}</strong>!`;
+            } else if (loggedInUser) {
+                 document.getElementById('admin-greeting').innerHTML = `Chào, <strong class="font-medium">Admin</strong>!`;
+            }
+            
+            const allUsers = JSON.parse(localStorage.getItem('users')) || [];
+            document.getElementById('user-count').textContent = allUsers.filter(u => u.role === 'user').length;
+
+            const products = JSON.parse(localStorage.getItem('products')) || [];
+            document.getElementById('product-count').textContent = products.length;
+
+            const allOrdersArray = JSON.parse(localStorage.getItem('orders')) || [];
+            
+            document.getElementById('total-order-count').textContent = allOrdersArray.length;
+            document.getElementById('new-order-count').textContent = allOrdersArray.filter(o => o.status === 'Đang xử lý' || o.status === 'Chờ xác nhận thanh toán').length;
+        };
+
+        const handleLogout = () => {
+            if (confirm('Bạn có chắc chắn muốn đăng xuất?')) {
+                localStorage.removeItem('loggedInUser');
+                window.location.href = 'login.html';
+            }
+        };
+        
+        document.getElementById('logout-btn').addEventListener('click', handleLogout);
+        
+        // Luôn chạy khởi tạo dữ liệu và sau đó cập nhật giao diện
+        document.addEventListener('DOMContentLoaded', () => {
+            // ***** SỬA LỖI Ở ĐÂY *****
+            // Chỉ khởi tạo dữ liệu gốc NẾU trong localStorage chưa có sản phẩm nào
+            if (!localStorage.getItem('products')) {
+                console.log("LocalStorage trống, đang khởi tạo dữ liệu gốc...");
+                initializeAndStoreMasterData(); 
+            }
+            
+            // Dù có khởi tạo hay không, vẫn luôn cập nhật giao diện
+            updateDashboardUI(); 
+        });
+
+        window.addEventListener('pageshow', () => {
+            // Cập nhật lại UI mỗi khi quay lại trang (ví dụ: dùng nút back của trình duyệt)
+            updateDashboardUI();
+        });
+    </script>
+</body>
+</html>

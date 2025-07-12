@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thanh toán | linhkien4u</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    const loggedInUserForCheckout = JSON.parse(localStorage.getItem('loggedInUser'));
+    if (!loggedInUserForCheckout || loggedInUserForCheckout.role !== 'user') {
+        alert('Vui lòng đăng nhập để thanh toán!');
+        window.location.href = 'login.html';
+    } else {
+        const userCartKey = `cart_${loggedInUserForCheckout.email}`;
+        const cartForCheckout = JSON.parse(localStorage.getItem(userCartKey)) || [];
+        if (cartForCheckout.length === 0) {
+            alert('Giỏ hàng của bạn đang trống, không thể thanh toán!');
+            window.location.href = 'cart.html';
+        }
+    }
+  </script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+  <header class="bg-white border-b">
+    <div class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
+      <a href="index.html" class="text-2xl font-bold text-gray-900">linhkien4u</a>
+      <a href="cart.html" class="text-sm text-blue-600 hover:underline">← Quay lại giỏ hàng</a>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Hoàn tất đơn hàng</h1>
+    <form id="checkout-form" class="grid grid-cols-1 md:grid-cols-2 gap-12">
+      
+      <div class="space-y-6">
+        <div class="bg-white p-6 rounded-lg shadow">
+          <h2 class="text-xl font-semibold mb-4">1. Thông tin giao hàng</h2>
+          <div class="space-y-3">
+            <div><label for="name" class="block text-sm font-medium text-gray-700">Họ và tên</label><input type="text" id="name" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2" required></div>
+            <div><label for="email" class="block text-sm font-medium text-gray-700">Email</label><input type="email" id="email" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm bg-gray-100 p-2" readonly></div>
+            <div><label for="address" class="block text-sm font-medium text-gray-700">Địa chỉ nhận hàng</label><input type="text" id="address" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2" required></div>
+            <div><label for="phone" class="block text-sm font-medium text-gray-700">Số điện thoại</label><input type="tel" id="phone" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2" required></div>
+          </div>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow">
+          <h2 class="text-xl font-semibold mb-4">2. Phương thức thanh toán</h2>
+          <div class="space-y-3">
+            <label class="payment-option flex items-center p-3 border rounded-md cursor-pointer"><input type="radio" name="paymentMethod" value="cod" class="h-4 w-4 text-blue-600" checked><span class="ml-3 font-medium">Thanh toán khi nhận hàng (COD)</span></label>
+            <label class="payment-option flex items-center p-3 border rounded-md cursor-pointer"><input type="radio" name="paymentMethod" value="bank_transfer" class="h-4 w-4 text-blue-600"><span class="ml-3 font-medium">Chuyển khoản Ngân hàng</span></label>  
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white p-6 rounded-lg shadow h-fit sticky top-8">
+        <h2 class="text-xl font-semibold mb-4">Kiểm tra lại đơn hàng</h2>
+        <div id="order-summary-list" class="space-y-3 max-h-60 overflow-y-auto pr-2 border-b pb-4"></div>
+        <div class="mt-4 border-b pb-4">
+            <label for="voucher-code" class="block text-sm font-medium text-gray-700">Mã giảm giá</label>
+            <div class="mt-1 flex rounded-md shadow-sm">
+                <input type="text" id="voucher-code" class="flex-1 block w-full rounded-none rounded-l-md border-gray-300 p-2" placeholder="Nhập mã...">
+                <button type="button" id="apply-voucher-btn" class="inline-flex items-center px-3 rounded-r-md border border-l-0 border-gray-300 bg-gray-50 text-gray-500 text-sm hover:bg-gray-100">Áp dụng</button>
+            </div>
+            <p id="voucher-message" class="text-sm mt-2 min-h-[20px]"></p>
+        </div>
+        <div class="mt-4 pt-4 space-y-2">
+          <div class="flex justify-between"><span class="text-gray-600">Tạm tính</span><span id="summary-subtotal" class="font-medium">0đ</span></div>
+          <div class="flex justify-between"><span class="text-gray-600">Phí vận chuyển</span><span id="shipping-fee" class="font-medium">--</span></div>
+          <div id="discount-row" class="hidden justify-between text-green-600"><span>Giảm giá</span><span id="summary-discount" class="font-medium">- 0đ</span></div>
+          <div class="flex justify-between font-bold text-lg mt-2 border-t pt-2"><span>Tổng cộng</span><span id="summary-total" class="text-red-600">0đ</span></div>
+        </div>
+        <button type="submit" id="place-order-btn" class="mt-6 w-full bg-red-600 text-white font-bold py-3 rounded-lg hover:bg-red-700 transition">HOÀN TẤT ĐẶT HÀNG</button>
+      </div>
+    </form>
+  </main>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem('loggedInUser'));
+    const allProducts = JSON.parse(localStorage.getItem('products')) || [];
+    const allVouchers = JSON.parse(localStorage.getItem('vouchers')) || [];
+    const USER_CART_KEY = `cart_${user.email}`;
+    const ALL_ORDERS_KEY = 'orders';
+    let appliedVoucher = null;
+
+    const formatCurrency = (n) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(n || 0);
+    
+    const calculateShippingFee = (address) => {
+        if (!address) return 0;
+        const lowerCaseAddress = address.toLowerCase();
+        const hcmInnerKeywords = ['quận 1', 'q1', 'quận 3', 'q3', 'quận 4', 'q4', 'quận 5', 'q5', 'quận 6', 'q6', 'quận 8', 'q8', 'quận 10', 'q10', 'quận 11', 'q11', 'tân bình', 'tân phú', 'gò vấp', 'bình thạnh', 'phú nhuận'];
+        const hcmOuterKeywords = ['quận 2', 'q2', 'quận 7', 'q7', 'quận 9', 'q9', 'quận 12', 'q12', 'thủ đức', 'bình tân', 'hóc môn', 'củ chi', 'bình chánh', 'nhà bè', 'cần giờ'];
+        if (hcmInnerKeywords.some(keyword => lowerCaseAddress.includes(keyword))) return 20000;
+        if (hcmOuterKeywords.some(keyword => lowerCaseAddress.includes(keyword)) || lowerCaseAddress.includes('hcm') || lowerCaseAddress.includes('hồ chí minh')) return 30000;
+        return 40000;
+    };
+
+    function saveOrder(orderData) {
+        if (appliedVoucher) {
+            const voucherIndex = allVouchers.findIndex(v => v.code === appliedVoucher.code);
+            if (voucherIndex > -1) {
+                allVouchers[voucherIndex].usedCount++;
+                localStorage.setItem('vouchers', JSON.stringify(allVouchers));
+            }
+        }
+        const allOrders = JSON.parse(localStorage.getItem(ALL_ORDERS_KEY)) || [];
+        allOrders.unshift(orderData);
+        localStorage.setItem(ALL_ORDERS_KEY, JSON.stringify(allOrders));
+        localStorage.removeItem(USER_CART_KEY);
+        alert('Quý khách đã đặt hàng thành công. Cảm ơn quý khách đã mua hàng.\nChúng tôi sẽ liên lạc với quý khách trong thời gian sớm nhất.\nQuý khách có thể thanh toán bằng tiền mặt hoặc chuyển khoản qua Ngân hàng TMCP Công Thương Việt Nam chi nhánh Tân Bình theo số tài khoản: 118000134029 hoặc trực tiếp qua CÔNG TY TNHH.MTV TM DV BKITEC');
+        window.location.href = 'my-orders.html';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const cart = JSON.parse(localStorage.getItem(USER_CART_KEY)) || [];
+        
+        const nameInput = document.getElementById('name'), emailInput = document.getElementById('email'), addressInput = document.getElementById('address'), phoneInput = document.getElementById('phone');
+        const summaryList = document.getElementById('order-summary-list'), subtotalEl = document.getElementById('summary-subtotal'), shippingFeeEl = document.getElementById('shipping-fee'), totalEl = document.getElementById('summary-total');
+        const voucherInput = document.getElementById('voucher-code'), applyVoucherBtn = document.getElementById('apply-voucher-btn'), voucherMessage = document.getElementById('voucher-message'), discountRow = document.getElementById('discount-row'), discountEl = document.getElementById('summary-discount');
+
+        nameInput.value = user.fullname || '';
+        emailInput.value = user.email || '';
+        addressInput.value = user.address || '';
+        phoneInput.value = user.phone || '';
+
+        const sanitizedCart = cart.map(item => {
+            if (typeof item.price !== 'number' || isNaN(item.price)) {
+                const productFromDb = allProducts.find(p => p.id === item.id);
+                item.price = productFromDb ? productFromDb.price : 0;
+            }
+            return item;
+        });
+        
+        const subtotalAmount = sanitizedCart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        
+        summaryList.innerHTML = sanitizedCart.map(item => `
+            <div class="flex justify-between items-start text-sm">
+                <div class="flex items-start gap-3">
+                    <img src="${item.img || './images/placeholder.png'}" class="w-12 h-12 rounded object-cover border">
+                    <div>
+                        <p class="font-semibold text-gray-800">${item.name}</p>
+                        <p class="text-gray-500">Số lượng: ${item.quantity}</p>
+                    </div>
+                </div>
+                <span class="font-medium text-gray-700">${formatCurrency(item.price * item.quantity)}</span>
+            </div>
+        `).join('');
+
+        const updateTotals = () => {
+            const shippingFee = calculateShippingFee(addressInput.value);
+            let discountAmount = 0;
+            
+            if (appliedVoucher) {
+                if (appliedVoucher.type === 'percentage') discountAmount = subtotalAmount * (appliedVoucher.value / 100);
+                else if (appliedVoucher.type === 'fixed') discountAmount = Math.min(appliedVoucher.value, subtotalAmount);
+                else if (appliedVoucher.type === 'shipping') discountAmount = shippingFee;
+            }
+
+            discountRow.classList.toggle('hidden', discountAmount <= 0);
+            discountRow.classList.toggle('flex', discountAmount > 0);
+            discountEl.textContent = `- ${formatCurrency(discountAmount)}`;
+            
+            const totalAmount = subtotalAmount + shippingFee - discountAmount;
+            
+            subtotalEl.textContent = formatCurrency(subtotalAmount);
+            shippingFeeEl.textContent = formatCurrency(shippingFee);
+            totalEl.textContent = formatCurrency(totalAmount > 0 ? totalAmount : 0);
+        };
+        
+        addressInput.addEventListener('input', updateTotals);
+        applyVoucherBtn.addEventListener('click', () => {
+            const code = voucherInput.value.toUpperCase().trim();
+            voucherMessage.textContent = '';
+            appliedVoucher = null;
+            const voucher = allVouchers.find(v => v.code === code);
+            
+            if (!voucher) { voucherMessage.textContent = 'Mã không hợp lệ.'; voucherMessage.className = 'text-sm mt-2 text-red-600'; updateTotals(); return; }
+            if (!voucher.isActive || new Date() > new Date(voucher.expiryDate) || voucher.usedCount >= voucher.uses) {
+                voucherMessage.textContent = 'Mã không hợp lệ hoặc đã hết hạn/lượt dùng.';
+                voucherMessage.className = 'text-sm mt-2 text-red-600';
+                updateTotals(); return;
+            }
+            if (subtotalAmount < voucher.minOrderValue) {
+                voucherMessage.textContent = `Áp dụng cho đơn từ ${formatCurrency(voucher.minOrderValue)}.`;
+                voucherMessage.className = 'text-sm mt-2 text-red-600';
+                updateTotals(); return;
+            }
+
+            appliedVoucher = voucher;
+            voucherMessage.textContent = `Áp dụng thành công!`;
+            voucherMessage.className = 'text-sm mt-2 text-green-600';
+            updateTotals();
+        });
+
+        document.getElementById('checkout-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const customerInfo = { name: nameInput.value.trim(), email: emailInput.value.trim(), address: addressInput.value.trim(), phone: phoneInput.value.trim() };
+            if (!customerInfo.name || !customerInfo.phone || !customerInfo.address) { alert('Vui lòng điền đầy đủ thông tin giao hàng.'); return; }
+
+            user.fullname = customerInfo.name; user.address = customerInfo.address; user.phone = customerInfo.phone;
+            localStorage.setItem('loggedInUser', JSON.stringify(user));
+
+            let allUsers = JSON.parse(localStorage.getItem('users')) || [];
+            const userIndex = allUsers.findIndex(u => u.email === user.email);
+            if(userIndex > -1) { allUsers[userIndex] = user; localStorage.setItem('users', JSON.stringify(allUsers)); }
+            
+            let shippingFee = calculateShippingFee(addressInput.value);
+            let discountAmount = 0;
+            if (appliedVoucher) {
+                if (appliedVoucher.type === 'percentage') discountAmount = subtotalAmount * (appliedVoucher.value / 100);
+                else if (appliedVoucher.type === 'fixed') discountAmount = Math.min(appliedVoucher.value, subtotalAmount);
+                else if (appliedVoucher.type === 'shipping') discountAmount = shippingFee;
+            }
+            const finalTotal = subtotalAmount + shippingFee - discountAmount;
+
+            const completeOrderData = {
+                orderId: `LK4U-${Date.now()}`, userEmail: user.email, customerInfo,
+                paymentMethod: document.querySelector('input[name="paymentMethod"]:checked').value,
+                orderDate: new Date().toISOString(), subtotal: subtotalAmount,
+                shippingFee: shippingFee,
+                discount: { code: appliedVoucher ? appliedVoucher.code : null, amount: discountAmount },
+                totalAmount: finalTotal > 0 ? finalTotal : 0, items: sanitizedCart,
+                status: (document.querySelector('input[name="paymentMethod"]:checked').value === 'cod') ? 'Đang xử lý' : 'Chờ xác nhận thanh toán',
+            };
+
+            if (completeOrderData.paymentMethod !== 'cod') {
+                sessionStorage.setItem('tempOrder', JSON.stringify(completeOrderData));
+                window.location.href = `payment-guide.html?method=${completeOrderData.paymentMethod}`;
+            } else {
+                saveOrder(completeOrderData);
+            }
+        });
+
+        const paymentOptions = document.querySelectorAll('.payment-option');
+        paymentOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                paymentOptions.forEach(opt => opt.classList.remove('border-blue-500', 'bg-blue-50'));
+                option.classList.add('border-blue-500', 'bg-blue-50');
+                option.querySelector('input[type="radio"]').checked = true;
+            });
+        });
+        const defaultPaymentOption = document.querySelector('input[name="paymentMethod"]:checked');
+        if(defaultPaymentOption) {
+            defaultPaymentOption.closest('.payment-option').classList.add('border-blue-500', 'bg-blue-50');
+        }
+
+        updateTotals();
+    });
+  </script>
+</body>
+</html>
