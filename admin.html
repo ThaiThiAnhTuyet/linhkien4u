@@ -145,66 +145,107 @@
     </div>
 
     <script>
-        // ***** BẮT ĐẦU VÙNG SỬA DỮ LIỆU QUAN TRỌNG *****
-
-        // Đây là "Bản thiết kế gốc", nguồn dữ liệu duy nhất và chính xác nhất cho toàn bộ hệ thống.
-        // Dữ liệu này chứa 34 sản phẩm như bạn đã có trên máy local.
-        const masterProductCatalog = [
-            { mainCategoryTitle: "ĐẦU NỐI & CỔNG KẾT NỐI", subCategories: [ { type: "ket-noi", title: "Cổng mạng RJ45", products: [ { id: "HR911105A", name: "HR911105A Cổng mạng Ethernet RJ45", priceTiers: [{ range: "1+", price: "15.000đ" }], img: "./images/Product/SanPhamNoiBat/HR911105A.jpg" } ] } ] },
-            { mainCategoryTitle: "LINH KIỆN BÁN DẪN", subCategories: [ { type: "transistor-bjt", title: "Transistor BJT", products: [ { id: "a1013", name: "A1013", priceTiers: [{ range: "1+", price: "1.000đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/Transistor BJT/A1013.jpg" }, { id: "d718", name: "D718", priceTiers: [{ range: "1+", price: "9.000đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/Transistor BJT/D718.jpg" }, { id: "b688", name: "B688", priceTiers: [{ range: "1+", price: "9.000đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/Transistor BJT/B688.jpg" }, { id: "c5200", name: "2SC5200 (C5200)", priceTiers: [{ range: "1+", price: "30.000đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/Transistor BJT/2SC5200 (C5200).jpg" } ] }, { type: "mosfet", title: "MOSFET", products: [ { id: "IRF9540", name: "IRF9540", priceTiers: [{ range: "1+", price: "11.500đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/MOSFET/IRF9540.png" }, { id: "6N60A", name: "6N60A", priceTiers: [{ range: "1+", price: "14.000đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/MOSFET/6N60A.jpg" }, { id: "AOD1N60", name: "AOD1N60", priceTiers: [{ range: "1+", price: "8.500đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/MOSFET/AOD1N60.jpg" }, { id: "W14NK50Z", name: "W14NK50Z", priceTiers: [{ range: "1+", price: "39.000đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/MOSFET/W14NK50Z.jpg" }, { id: "2SK2369", name: "2SK2369", priceTiers: [{ range: "1+", price: "14.000đ" }], img: "./images/Product/SanPhamNoiBat/2SK2369.jpg" } ] }, { type: "igbt", title: "IGBT", products: [ { id: "FGA25N120", name: "FGA25N120", priceTiers: [{ range: "1+", price: "29.000đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/IGBT/FGA25N120.jpg" }, { id: "H20R1203", name: "H20R1203", priceTiers: [{ range: "1+", price: "50.000đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/IGBT/H20R1203.jpg" } ] }, { type: "ic-chuc-nang", title: "IC Chức năng", products: [ { id: "DAC0832LCN", name: "DAC0832LCN Bộ chuyển đổi DAC 8-bit", priceTiers: [{ range: "1+", price: "54.000đ" }], img: "./images/Product/SanPhamNoiBat/DAC0832LCN.jpg", manufacturer: "Texas Instruments (TI)", origin: "Chính hãng", description: "Bộ chuyển đổi Tương tự-Số (DAC) 8-bit, song song, có vi xử lý tương thích và logic chốt kép." } ] } ] },
-            { mainCategoryTitle: "CẢM BIẾN (SENSORS)", subCategories: [ { type: "cam-bien-nhiet-do", title: "Cảm biến nhiệt độ", products: [ { id: "DS18B20", name: "DS18B20", priceTiers: [{ range: "1+", price: "26.000đ" }], img: "./images/Product/CẢM BIẾN (SENSORS)/Cảm biến nhiệt độ/DS18B20.png" } ] }, { type: "cam-bien-pir", title: "Cảm biến chuyển động (PIR)", products: [ { id: "D203B", name: "D203B", priceTiers: [{ range: "1+", price: "25.000đ" }], img: "./images/Product/CẢM BIẾN (SENSORS)/Cảm biến chuyển động/D203B.png" } ] }, { type: "cam-bien-mau-sac", title: "Cảm biến màu sắc", products: [ { id: "TCS230", name: "TTCS230", priceTiers: [{ range: "1+", price: "65.000đ" }], img: "./images/Product/CẢM BIẾN (SENSORS)/Cảm biến màu sắc/TCS230.jpg" } ] } ] },
-            { mainCategoryTitle: "LINH KIỆN CÔNG SUẤT - NGUỒN", subCategories: [ { type: "ic-nguon", title: "IC Nguồn", products: [ { id: "LM317", name: "LM317", priceTiers: [{ range: "1+", price: "4.000đ" }], img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/IC Nguồn/LM317.png" }, { id: "78L05", name: "78L05", priceTiers: [{ range: "1+", price: "5.000đ" }], img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/IC Nguồn/78L05.jpg" }, { id: "LM350K", name: "LM350K", priceTiers: [{ range: "1+", price: "60.000đ" }], img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/IC Nguồn/LM350K.png" }, { id: "LM2575-0.5BU", name: "LM2575-0.5BU", priceTiers: [{ range: "1+", price: "25.000đ" }], img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/IC Nguồn/LM2575-0.5BU.jpg" } ] }, { type: "module-cong-suat", title: "Module Công suất", products: [ { id: "PM50CLA060", name: "PM50CLA060", priceTiers: [{ range: "1+", price: "3.200.000đ" }], img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/Module Công suất/PM50CLA060.png" }, { id: "PM200RSA060", name: "PM200RSA060", priceTiers: [{ range: "1+", price: "7.500.000đ" }], img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/Module Công suất/PM200RSA060.png" }, { id: "FSBF10CH60B", name: "FSBF10CH60B", priceTiers: [{ range: "1+", price: "800.000đ" }], img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/Module Công suất/FSBF10CH60B.png" }, { id: "SKKT26/12D", name: "SKKT26/12D", priceTiers: [{ range: "1+", price: "490.000đ" }], img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/Module Công suất/SKKT26_12D.jpg" } ] }, { type: "ics-do-sai", title: "ICs Dò sai", products: [ { id: "TL431", name: "TL431", priceTiers: [{ range: "1+", price: "3.000đ" }], img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/ICs Dò sai/TL431.png" } ] } ] },
-            { mainCategoryTitle: "BỘ NGUỒN (ADAPTER)", subCategories: [ { type: "adapter", title: "Bộ nguồn (Adapter)", products: [ { id: "Bộ nguồn 5V - 1A", name: "Bộ nguồn 5V - 1A", priceTiers: [{ range: "1+", price: "45.000đ" }], img: "./images/Product/BỘ NGUỒN (ADAPTER) - BIẾN ÁP/Bộ nguồn (Adapter)/Bộ nguồn 5V - 1A.jpg" }, { id: "Bộ nguồn 12V - 1A", name: "Bộ nguồn 12V - 1A", priceTiers: [{ range: "1+", price: "52.000đ" }], img: "./images/Product/BỘ NGUỒN (ADAPTER) - BIẾN ÁP/Bộ nguồn (Adapter)/Bộ nguồn 12V - 1A.jpg" } ] } ] },
-            { mainCategoryTitle: "ĐIỆN TRỞ (RESISTORS)", subCategories: [ { type: "resistor-0603", title: "Resistors SMD 0603", products: [ { id: "1Ω - 1% (gói10pcs)", name: "1Ω - 1% (gói10pcs)", priceTiers: [{ range: "1+", price: "1.200đ" }], img: "./images/Product/ĐIỆN TRỞ (RESISTORS)/Resistors SMD 0603/1Ω.png" }, { id: "1Ω -5% (gói10pcs)", name: "1Ω -5% (gói10pcs)", priceTiers: [{ range: "1+", price: "1.000đ" }], img: "./images/Product/ĐIỆN TRỞ (RESISTORS)/Resistors SMD 0603/1Ω.png" } ] }, { type: "resistor-3w", title: "Điện trở 3W", products: [ { id: "1Ω", name: "1Ω", priceTiers: [{ range: "1+", price: "50đ" }], img: "./images/Product/ĐIỆN TRỞ (RESISTORS)/Điện trở 3W/1Ω.jpg" } ] }, { type: "resistor-thanh", title: "Điện trở thanh", products: [ { id: "Điện trở thanh 1K", name: "Điện trở thanh 1K", priceTiers: [{ range: "1+", price: "2.000đ" }], img: "./images/Product/ĐIỆN TRỞ (RESISTORS)/Điện trở thanh/Điện trở thanh 1K.png" } ] } ] },
-            { mainCategoryTitle: "TỤ ĐIỆN (CAPACITORS)", subCategories: [ { type: "tu-dien", title: "Tụ điện", products: [ { id: "472-1KV", name: "472-1KV", priceTiers: [{ range: "1+", price: "250đ" }], img: "./images/Product/TỤ ĐIỆN (CAPACITORS)/Tụ điện/472-1KV.jpg" }, { id: "Tụ hóa 1µF/16V", name: "Tụ hóa 1µF/16V", priceTiers: [{ range: "1+", price: "300đ" }], img: "./images/Product/TỤ ĐIỆN (CAPACITORS)/Tụ điện/Tụ hóa 1µF_16V.jpg" } ] }, { type: "tu-dien-smd", title: "Tụ điện SMD (dán)", products: [ { id: "tụ Aluminum 100uF/16V", name: "tụ Aluminum 100uF/16V", priceTiers: [{ range: "1+", price: "1.500đ" }], img: "./images/Product/TỤ ĐIỆN (CAPACITORS)/Tụ điện SMD (dán)/tụ Aluminum 100uF_16V.png" } ] }, { type: "nichicon", title: "Thương hiệu Nichicon", products: [ { id: "Tụ 47uF 16V", name: "Tụ 47uF 16V", priceTiers: [{ range: "1+", price: "2.000đ" }], img: "./images/Product/TỤ ĐIỆN (CAPACITORS)/Thương hiệu Nichicon/Tụ 47uF 16V.jpg" } ] } ] }
+        // ===== BẮT ĐẦU VÙNG DỮ LIỆU GỐC (MASTER DATA) =====
+        
+        // Đây là nguồn dữ liệu duy nhất và chính xác nhất cho toàn bộ hệ thống.
+        
+        const masterCategories = [
+            { id: "ket-noi", name: "Cổng mạng RJ45" },
+            { id: "transistor-bjt", name: "Transistor BJT" },
+            { id: "mosfet", name: "MOSFET" },
+            { id: "igbt", name: "IGBT" },
+            { id: "ic-chuc-nang", name: "IC Chức năng" },
+            { id: "cam-bien-nhiet-do", name: "Cảm biến nhiệt độ" },
+            { id: "cam-bien-pir", name: "Cảm biến chuyển động (PIR)" },
+            { id: "cam-bien-mau-sac", name: "Cảm biến màu sắc" },
+            { id: "ic-nguon", name: "IC Nguồn" },
+            { id: "module-cong-suat", name: "Module Công suất" },
+            { id: "ics-do-sai", name: "ICs Dò sai" },
+            { id: "adapter", name: "Bộ nguồn (Adapter)" },
+            { id: "resistor-0603", name: "Resistors SMD 0603" },
+            { id: "resistor-3w", name: "Điện trở 3W" },
+            { id: "resistor-thanh", name: "Điện trở thanh" },
+            { id: "tu-dien", name: "Tụ điện" },
+            { id: "tu-dien-smd", name: "Tụ điện SMD (dán)" },
+            { id: "nichicon", name: "Thương hiệu Nichicon" }
         ];
 
-        // Hàm xử lý và chuyển đổi dữ liệu gốc sang định dạng phẳng để lưu trữ
-        function initializeAndStoreMasterData() {
-            const parsePrice = (s) => (s && typeof s === 'string') ? parseInt(s.replace(/[\.đ₫,]/g, '')) : 0;
-            const allProducts = masterProductCatalog.flatMap(mainCat => 
-                mainCat.subCategories.flatMap(subCat => 
-                    subCat.products.map(p => {
-                        const brandName = p.manufacturer || 'Chưa xác định';
-                        return {
-                            ...p, 
-                            id: p.id,
-                            name: p.name,
-                            price: parsePrice(p.priceTiers[0].price), 
-                            stock: p.stock || Math.floor(Math.random() * 100) + 20, // Giữ stock cũ nếu có, nếu không thì tạo mới
-                            categoryId: subCat.type, 
-                            brandId: 'brand-' + brandName.toLowerCase().replace(/\s+/g, '-'),
-                            desc: p.description || `Mô tả chi tiết cho ${p.name} đang được cập nhật.`
-                        };
-                    })
-                )
-            );
-            
-            let categories = [];
-            const categoryMap = new Map();
-            masterProductCatalog.forEach(mc => mc.subCategories.forEach(sc => {
-                if (!categoryMap.has(sc.title)) {
-                    categoryMap.set(sc.title, sc.type);
-                    categories.push({ id: sc.type, name: sc.title });
-                }
-            }));
-            categories.sort((a,b) => a.name.localeCompare(b.name));
+        const masterBrands = [
+            { id: "brand-aos", name: "AOS" },
+            { id: "brand-dallas", name: "Dallas" },
+            { id: "brand-fairchild", name: "Fairchild Semiconductor" },
+            { id: "brand-hanrun", name: "HanRun" },
+            { id: "brand-infineon", name: "Infineon" },
+            { id: "brand-ir", name: "International Rectifier" },
+            { id: "brand-kec", name: "KEC" },
+            { id: "brand-micren", name: "MICREN" },
+            { id: "brand-mitsubishi", name: "Mitsubishi Electric" },
+            { id: "brand-national", name: "National Semiconductor" },
+            { id: "brand-nec", name: "NEC" },
+            { id: "brand-nichicon", name: "Nichicon" },
+            { id: "brand-semikron", name: "SMIKRON" },
+            { id: "brand-st", name: "ST Microelectronics" },
+            { id: "brand-taiwan", name: "Taiwan" },
+            { id: "brand-taos", name: "TAOS" },
+            { id: "brand-toshiba", name: "TOSHIBA" },
+            { id: "brand-cn", name: "Trung Quốc" },
+            { id: "brand-vishay", name: "VISHAY" }
+        ];
 
-            let brands = [];
-            const brandMap = new Map();
-            allProducts.forEach(p => {
-                if (p.manufacturer && !brandMap.has(p.manufacturer)) {
-                    brandMap.set(p.manufacturer, p.brandId);
-                    brands.push({ id: p.brandId, name: p.manufacturer });
-                }
-            });
-            brands.sort((a,b) => a.name.localeCompare(b.name));
-            
+        const masterProductData = [
+            // Thêm các sản phẩm của bạn vào đây, đúng 34 sản phẩm
+            { id: "HR911105A", name: "HR911105A Cổng mạng Ethernet RJ45", price: 15000, categoryId: "ket-noi", brandId: "brand-hanrun", img: "./images/Product/SanPhamNoiBat/HR911105A.jpg" },
+            { id: "a1013", name: "A1013", price: 1000, categoryId: "transistor-bjt", brandId: "brand-toshiba", img: "./images/Product/LINH KIỆN BÁN DẪN/Transistor BJT/A1013.jpg" },
+            { id: "d718", name: "D718", price: 9000, categoryId: "transistor-bjt", brandId: "brand-toshiba", img: "./images/Product/LINH KIỆN BÁN DẪN/Transistor BJT/D718.jpg" },
+            { id: "b688", name: "B688", price: 9000, categoryId: "transistor-bjt", brandId: "brand-toshiba", img: "./images/Product/LINH KIỆN BÁN DẪN/Transistor BJT/B688.jpg" },
+            { id: "c5200", name: "2SC5200 (C5200)", price: 30000, categoryId: "transistor-bjt", brandId: "brand-toshiba", img: "./images/Product/LINH KIỆN BÁN DẪN/Transistor BJT/2SC5200 (C5200).jpg" },
+            { id: "IRF9540", name: "IRF9540", price: 11500, categoryId: "mosfet", brandId: "brand-vishay", img: "./images/Product/LINH KIỆN BÁN DẪN/MOSFET/IRF9540.png" },
+            { id: "6N60A", name: "6N60A", price: 14000, categoryId: "mosfet", brandId: "brand-st", img: "./images/Product/LINH KIỆN BÁN DẪN/MOSFET/6N60A.jpg" },
+            { id: "AOD1N60", name: "AOD1N60", price: 8500, categoryId: "mosfet", brandId: "brand-aos", img: "./images/Product/LINH KIỆN BÁN DẪN/MOSFET/AOD1N60.jpg" },
+            { id: "W14NK50Z", name: "W14NK50Z", price: 39000, categoryId: "mosfet", brandId: "brand-st", img: "./images/Product/LINH KIỆN BÁN DẪN/MOSFET/W14NK50Z.jpg" },
+            { id: "2SK2369", name: "2SK2369", price: 14000, categoryId: "mosfet", brandId: "brand-nec", img: "./images/Product/SanPhamNoiBat/2SK2369.jpg" },
+            { id: "FGA25N120", name: "FGA25N120", price: 29000, categoryId: "igbt", brandId: "brand-fairchild", img: "./images/Product/LINH KIỆN BÁN DẪN/IGBT/FGA25N120.jpg" },
+            { id: "H20R1203", name: "H20R1203", price: 50000, categoryId: "igbt", brandId: "brand-infineon", img: "./images/Product/LINH KIỆN BÁN DẪN/IGBT/H20R1203.jpg" },
+            { id: "DAC0832LCN", name: "DAC0832LCN Bộ chuyển đổi DAC 8-bit", price: 54000, categoryId: "ic-chuc-nang", brandId: "brand-national", img: "./images/Product/SanPhamNoiBat/DAC0832LCN.jpg", description: "Bộ chuyển đổi Tương tự-Số (DAC) 8-bit, song song, có vi xử lý tương thích và logic chốt kép." },
+            { id: "DS18B20", name: "DS18B20", price: 26000, categoryId: "cam-bien-nhiet-do", brandId: "brand-dallas", img: "./images/Product/CẢM BIẾN (SENSORS)/Cảm biến nhiệt độ/DS18B20.png" },
+            { id: "D203B", name: "D203B", price: 25000, categoryId: "cam-bien-pir", brandId: "brand-micren", img: "./images/Product/CẢM BIẾN (SENSORS)/Cảm biến chuyển động/D203B.png" },
+            { id: "TCS230", name: "TTCS230", price: 65000, categoryId: "cam-bien-mau-sac", brandId: "brand-taos", img: "./images/Product/CẢM BIẾN (SENSORS)/Cảm biến màu sắc/TCS230.jpg" },
+            { id: "LM317", name: "LM317", price: 4000, categoryId: "ic-nguon", brandId: "brand-st", img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/IC Nguồn/LM317.png" },
+            { id: "78L05", name: "78L05", price: 5000, categoryId: "ic-nguon", brandId: "brand-st", img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/IC Nguồn/78L05.jpg" },
+            { id: "LM350K", name: "LM350K", price: 60000, categoryId: "ic-nguon", brandId: "brand-national", img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/IC Nguồn/LM350K.png" },
+            { id: "LM2575-0.5BU", name: "LM2575-0.5BU", price: 25000, categoryId: "ic-nguon", brandId: "brand-national", img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/IC Nguồn/LM2575-0.5BU.jpg" },
+            { id: "PM50CLA060", name: "PM50CLA060", price: 3200000, categoryId: "module-cong-suat", brandId: "brand-mitsubishi", img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/Module Công suất/PM50CLA060.png" },
+            { id: "PM200RSA060", name: "PM200RSA060", price: 7500000, categoryId: "module-cong-suat", brandId: "brand-mitsubishi", img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/Module Công suất/PM200RSA060.png" },
+            { id: "FSBF10CH60B", name: "FSBF10CH60B", price: 800000, categoryId: "module-cong-suat", brandId: "brand-fairchild", img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/Module Công suất/FSBF10CH60B.png" },
+            { id: "SKKT26/12D", name: "SKKT26/12D", price: 490000, categoryId: "module-cong-suat", brandId: "brand-semikron", img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/Module Công suất/SKKT26_12D.jpg" },
+            { id: "TL431", name: "TL431", price: 3000, categoryId: "ics-do-sai", brandId: "brand-st", img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/ICs Dò sai/TL431.png" },
+            { id: "adapter-5v-1a", name: "Bộ nguồn 5V - 1A", price: 45000, categoryId: "adapter", brandId: "brand-cn", img: "./images/Product/BỘ NGUỒN (ADAPTER) - BIẾN ÁP/Bộ nguồn (Adapter)/Bộ nguồn 5V - 1A.jpg" },
+            { id: "adapter-12v-1a", name: "Bộ nguồn 12V - 1A", price: 52000, categoryId: "adapter", brandId: "brand-cn", img: "./images/Product/BỘ NGUỒN (ADAPTER) - BIẾN ÁP/Bộ nguồn (Adapter)/Bộ nguồn 12V - 1A.jpg" },
+            { id: "resistor-1-1", name: "1Ω - 1% (gói10pcs)", price: 1200, categoryId: "resistor-0603", brandId: "brand-taiwan", img: "./images/Product/ĐIỆN TRỞ (RESISTORS)/Resistors SMD 0603/1Ω.png" },
+            { id: "resistor-1-5", name: "1Ω - 5% (gói10pcs)", price: 1000, categoryId: "resistor-0603", brandId: "brand-taiwan", img: "./images/Product/ĐIỆN TRỞ (RESISTORS)/Resistors SMD 0603/1Ω.png" },
+            { id: "resistor-1-3w", name: "1Ω", price: 50, categoryId: "resistor-3w", brandId: "brand-cn", img: "./images/Product/ĐIỆN TRỞ (RESISTORS)/Điện trở 3W/1Ω.jpg" },
+            { id: "resistor-thanh-1k", name: "Điện trở thanh 1K", price: 2000, categoryId: "resistor-thanh", brandId: "brand-cn", img: "./images/Product/ĐIỆN TRỞ (RESISTORS)/Điện trở thanh/Điện trở thanh 1K.png" },
+            { id: "tu-472-1kv", name: "472-1KV", price: 250, categoryId: "tu-dien", brandId: "brand-cn", img: "./images/Product/TỤ ĐIỆN (CAPACITORS)/Tụ điện/472-1KV.jpg" },
+            { id: "tu-hoa-1uf-16v", name: "Tụ hóa 1µF/16V", price: 300, categoryId: "tu-dien", brandId: "brand-cn", img: "./images/Product/TỤ ĐIỆN (CAPACITORS)/Tụ điện/Tụ hóa 1µF_16V.jpg" },
+            { id: "tu-smd-100uf-16v", name: "tụ Aluminum 100uF/16V", price: 1500, categoryId: "tu-dien-smd", brandId: "brand-kec", img: "./images/Product/TỤ ĐIỆN (CAPACITORS)/Tụ điện SMD (dán)/tụ Aluminum 100uF_16V.png" },
+            { id: "tu-nichicon-47uf-16v", name: "Tụ 47uF 16V", price: 2000, categoryId: "nichicon", brandId: "brand-nichicon", img: "./images/Product/TỤ ĐIỆN (CAPACITORS)/Thương hiệu Nichicon/Tụ 47uF 16V.jpg" }
+        ];
+
+        function initializeAndStoreMasterData() {
+            // Chuyển đổi dữ liệu gốc sang định dạng phẳng để lưu trữ
+            const allProducts = masterProductData.map(p => ({
+                ...p,
+                priceTiers: p.priceTiers || [{ range: "1+", price: `${p.price.toLocaleString('vi-VN')}đ` }],
+                stock: p.stock || Math.floor(Math.random() * 100) + 50,
+                desc: p.description || `Mô tả chi tiết cho sản phẩm ${p.name} đang được cập nhật.`
+            }));
+
             localStorage.setItem('products', JSON.stringify(allProducts));
-            localStorage.setItem('categories_full', JSON.stringify(masterProductCatalog));
-            localStorage.setItem('categories', JSON.stringify(categories));
-            localStorage.setItem('brands', JSON.stringify(brands));
+            localStorage.setItem('categories', JSON.stringify(masterCategories));
+            localStorage.setItem('brands', JSON.stringify(masterBrands));
         }
+        
+        // ===== KẾT THÚC VÙNG DỮ LIỆU GỐC =====
 
         const updateDashboardUI = () => {
             const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
@@ -236,7 +277,7 @@
         document.getElementById('logout-btn').addEventListener('click', handleLogout);
         
         document.addEventListener('DOMContentLoaded', () => {
-            // Sửa lỗi quan trọng nhất: Chỉ khởi tạo dữ liệu nếu chưa có dữ liệu trong localStorage
+            // Sửa lỗi quan trọng nhất: Chỉ khởi tạo dữ liệu nếu localStorage trống
             if (!localStorage.getItem('products')) {
                 console.log("LocalStorage trống, đang khởi tạo dữ liệu gốc từ admin.html...");
                 initializeAndStoreMasterData(); 
