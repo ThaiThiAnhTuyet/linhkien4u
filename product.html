@@ -100,66 +100,26 @@
   </footer>
 
    <script>
-    const productCatalog = [ 
-        { 
-            mainCategoryTitle: "ĐẦU NỐI & CỔNG KẾT NỐI",
-            subCategories: [
-                {
-                    type: "ket-noi",
-                    title: "Cổng mạng RJ45",
-                    products: [
-                        { 
-                            id: "HR911105A", 
-                            name: "HR911105A Cổng mạng Ethernet RJ45", 
-                            priceTiers: [{ range: "1+", price: "15.000đ" }], 
-                            // <<< ĐÃ SỬA: Cập nhật đúng đường dẫn ảnh và định dạng file
-                            img: "./images/Product/SanPhamNoiBat/HR911105A.jpg" 
-                        }
-                    ]
-                }
-            ]
-        },
-        { 
-            mainCategoryTitle: "LINH KIỆN BÁN DẪN", subCategories: [ { type: "transistor-bjt", title: "Transistor BJT", products: [ { id: "a1013", name: "A1013", priceTiers: [{ range: "1+", price: "1.000đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/Transistor BJT/A1013.jpg" }, { id: "d718", name: "D718", priceTiers: [{ range: "1+", price: "9.000đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/Transistor BJT/D718.jpg" }, { id: "b688", name: "B688", priceTiers: [{ range: "1+", price: "9.000đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/Transistor BJT/B688.jpg" }, { id: "c5200", name: "2SC5200 (C5200)", priceTiers: [{ range: "1+", price: "30.000đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/Transistor BJT/2SC5200 (C5200).jpg" } ] }, { type: "mosfet", title: "MOSFET", products: [ { id: "IRF9540", name: "IRF9540", priceTiers: [{ range: "1+", price: "11.500đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/MOSFET/IRF9540.png" }, { id: "6N60A", name: "6N60A", priceTiers: [{ range: "1+", price: "14.000đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/MOSFET/6N60A.jpg" }, { id: "AOD1N60", name: "AOD1N60", priceTiers: [{ range: "1+", price: "8.500đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/MOSFET/AOD1N60.jpg" }, { id: "W14NK50Z", name: "W14NK50Z", priceTiers: [{ range: "1+", price: "39.000đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/MOSFET/W14NK50Z.jpg" }, { id: "2SK2369", name: "2SK2369", priceTiers: [{ range: "1+", price: "14.000đ" }], img: "./images/Product/SanPhamNoiBat/2SK2369.jpg" } ] }, { type: "igbt", title: "IGBT", products: [ { id: "FGA25N120", name: "FGA25N120", priceTiers: [{ range: "1+", price: "29.000đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/IGBT/FGA25N120.jpg" }, { id: "H20R1203", name: "H20R1203", priceTiers: [{ range: "1+", price: "50.000đ" }], img: "./images/Product/LINH KIỆN BÁN DẪN/IGBT/H20R1203.jpg" } ] } ] }, { mainCategoryTitle: "CẢM BIẾN (SENSORS)", subCategories: [ { type: "cam-bien-nhiet-do", title: "Cảm biến nhiệt độ", products: [ { id: "DS18B20", name: "DS18B20", priceTiers: [{ range: "1+", price: "26.000đ" }], img: "./images/Product/CẢM BIẾN (SENSORS)/Cảm biến nhiệt độ/DS18B20.png" } ] }, { type: "cam-bien-pir", title: "Cảm biến chuyển động (PIR)", products: [ { id: "D203B", name: "D203B", priceTiers: [{ range: "1+", price: "25.000đ" }], img: "./images/Product/CẢM BIẾN (SENSORS)/Cảm biến chuyển động/D203B.png" } ] }, { type: "cam-bien-mau-sac", title: "Cảm biến màu sắc", products: [ { id: "TCS230", name: "TTCS230", priceTiers: [{ range: "1+", price: "65.000đ" }], img: "./images/Product/CẢM BIẾN (SENSORS)/Cảm biến màu sắc/TCS230.jpg" } ] } ] }, { mainCategoryTitle: "LINH KIỆN CÔNG SUẤT - NGUỒN", subCategories: [ { type: "ic-nguon", title: "IC Nguồn", products: [ { id: "LM317", name: "LM317", priceTiers: [{ range: "1+", price: "4.000đ" }], img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/IC Nguồn/LM317.png" }, { id: "78L05", name: "78L05", priceTiers: [{ range: "1+", price: "5.000đ" }], img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/IC Nguồn/78L05.jpg" }, { id: "LM350K", name: "LM350K", priceTiers: [{ range: "1+", price: "60.000đ" }], img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/IC Nguồn/LM350K.png" }, { id: "LM2575-0.5BU", name: "LM2575-0.5BU", priceTiers: [{ range: "1+", price: "25.000đ" }], img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/IC Nguồn/LM2575-0.5BU.jpg" } ] }, { type: "module-cong-suat", title: "Module Công suất", products: [ { id: "PM50CLA060", name: "PM50CLA060", priceTiers: [{ range: "1+", price: "3.200.000đ" }], img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/Module Công suất/PM50CLA060.png" }, { id: "PM200RSA060", name: "PM200RSA060", priceTiers: [{ range: "1+", price: "7.500.000đ" }], img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/Module Công suất/PM200RSA060.png" }, { id: "FSBF10CH60B", name: "FSBF10CH60B", priceTiers: [{ range: "1+", price: "800.000đ" }], img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/Module Công suất/FSBF10CH60B.png" }, { id: "SKKT26/12D", name: "SKKT26/12D", priceTiers: [{ range: "1+", price: "490.000đ" }], img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/Module Công suất/SKKT26_12D.jpg" } ] }, { type: "ics-do-sai", title: "ICs Dò sai", products: [ { id: "TL431", name: "TL431", priceTiers: [{ range: "1+", price: "3.000đ" }], img: "./images/Product/LINH KIỆN CÔNG SUẤT - NGUỒN/ICs Dò sai/TL431.png" } ] } ] }, { mainCategoryTitle: "BỘ NGUỒN (ADAPTER)", subCategories: [ { type: "adapter", title: "Bộ nguồn (Adapter)", products: [ { id: "Bộ nguồn 5V - 1A", name: "Bộ nguồn 5V - 1A", priceTiers: [{ range: "1+", price: "45.000đ" }], img: "./images/Product/BỘ NGUỒN (ADAPTER) - BIẾN ÁP/Bộ nguồn (Adapter)/Bộ nguồn 5V - 1A.jpg" }, { id: "Bộ nguồn 12V - 1A", name: "Bộ nguồn 12V - 1A", priceTiers: [{ range: "1+", price: "52.000đ" }], img: "./images/Product/BỘ NGUỒN (ADAPTER) - BIẾN ÁP/Bộ nguồn (Adapter)/Bộ nguồn 12V - 1A.jpg" } ] } ] }, { mainCategoryTitle: "ĐIỆN TRỞ (RESISTORS)", subCategories: [ { type: "resistor-0603", title: "Resistors SMD 0603", products: [ { id: "1Ω - 1% (gói10pcs)", name: "1Ω - 1% (gói10pcs)", priceTiers: [{ range: "1+", price: "1.200đ" }], img: "./images/Product/ĐIỆN TRỞ (RESISTORS)/Resistors SMD 0603/1Ω.png" }, { id: "1Ω -5% (gói10pcs)", name: "1Ω -5% (gói10pcs)", priceTiers: [{ range: "1+", price: "1.000đ" }], img: "./images/Product/ĐIỆN TRỞ (RESISTORS)/Resistors SMD 0603/1Ω.png" } ] }, { type: "resistor-3w", title: "Điện trở 3W", products: [ { id: "1Ω", name: "1Ω", priceTiers: [{ range: "1+", price: "50đ" }], img: "./images/Product/ĐIỆN TRỞ (RESISTORS)/Điện trở 3W/1Ω.jpg" } ] }, { type: "resistor-thanh", title: "Điện trở thanh", products: [ { id: "Điện trở thanh 1K", name: "Điện trở thanh 1K", priceTiers: [{ range: "1+", price: "2.000đ" }], img: "./images/Product/ĐIỆN TRỞ (RESISTORS)/Điện trở thanh/Điện trở thanh 1K.png" } ] } ] }, { mainCategoryTitle: "TỤ ĐIỆN (CAPACITORS)", subCategories: [ { type: "tu-dien", title: "Tụ điện", products: [ { id: "472-1KV", name: "472-1KV", priceTiers: [{ range: "1+", price: "250đ" }], img: "./images/Product/TỤ ĐIỆN (CAPACITORS)/Tụ điện/472-1KV.jpg" }, { id: "Tụ hóa 1µF/16V", name: "Tụ hóa 1µF/16V", priceTiers: [{ range: "1+", price: "300đ" }], img: "./images/Product/TỤ ĐIỆN (CAPACITORS)/Tụ điện/Tụ hóa 1µF_16V.jpg" } ] }, { type: "tu-dien-smd", title: "Tụ điện SMD (dán)", products: [ { id: "tụ Aluminum 100uF/16V", name: "tụ Aluminum 100uF/16V", priceTiers: [{ range: "1+", price: "1.500đ" }], img: "./images/Product/TỤ ĐIỆN (CAPACITORS)/Tụ điện SMD (dán)/tụ Aluminum 100uF_16V.png" } ] }, { type: "nichicon", title: "Thương hiệu Nichicon", products: [ { id: "Tụ 47uF 16V", name: "Tụ 47uF 16V", priceTiers: [{ range: "1+", price: "2.000đ" }], img: "./images/Product/TỤ ĐIỆN (CAPACITORS)/Thương hiệu Nichicon/Tụ 47uF 16V.jpg" } ] } ] }, ];
+    // ===== BẮT ĐẦU VÙNG SỬA LỖI QUAN TRỌNG =====
+    document.addEventListener("DOMContentLoaded", () => {
+        // Lấy dữ liệu sản phẩm và danh mục từ localStorage (nguồn dữ liệu chính xác nhất)
+        const allProducts = JSON.parse(localStorage.getItem('products')) || [];
+        const allCategories = JSON.parse(localStorage.getItem('categories')) || [];
 
-    const parsePrice = (s) => (s && typeof s === 'string' ? parseInt(s.replace(/[\.đ₫,]/g, '')) : 0);
-
-    const allProducts = productCatalog.flatMap(mainCat => 
-        mainCat.subCategories.flatMap(subCat => 
-            subCat.products.map(p => ({ ...p, price: parsePrice(p.priceTiers[0].price), category: subCat.title, mainCategory: mainCat.mainCategoryTitle, type: subCat.type }))
-        )
-    );
-
-    function addToCart(product) {
-        const user = JSON.parse(localStorage.getItem('loggedInUser'));
-        if (!user) {
-            if (confirm('Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.')) window.location.href = 'login.html';
+        // Nếu không có dữ liệu, báo lỗi và dừng lại
+        if (allProducts.length === 0) {
+            document.querySelector('main').innerHTML = '<p class="text-center text-red-500 py-10">Lỗi: Không tìm thấy dữ liệu sản phẩm. Vui lòng truy cập trang Quản trị (Admin) để khởi tạo dữ liệu.</p>';
             return;
         }
-        const userCartKey = `cart_${user.email}`;
-        let cart = JSON.parse(localStorage.getItem(userCartKey)) || [];
-        const existingItemIndex = cart.findIndex(item => item.id === product.id && item.type === product.type);
-        if (existingItemIndex > -1) { cart[existingItemIndex].quantity += 1; } 
-        else { product.quantity = 1; cart.push(product); }
-        localStorage.setItem(userCartKey, JSON.stringify(cart));
-        alert(`Đã thêm "${product.name}" vào giỏ hàng!`);
-        updateCartIconCount();
-    }
+        
+        // Gán tên danh mục cho từng sản phẩm để hiển thị
+        allProducts.forEach(p => {
+            const category = allCategories.find(c => c.id === p.categoryId);
+            p.categoryName = category ? category.name : 'Chưa phân loại';
+        });
+        // ===== KẾT THÚC VÙNG SỬA LỖI QUAN TRỌNG =====
 
-    function updateCartIconCount() {
-        const user = JSON.parse(localStorage.getItem('loggedInUser'));
-        if (!user) { document.getElementById('cart-count').style.display = 'none'; return; }
-        const userCartKey = `cart_${user.email}`;
-        const cart = JSON.parse(localStorage.getItem(userCartKey)) || [];
-        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-        const cartCountElement = document.getElementById('cart-count');
-        if (cartCountElement) {
-            cartCountElement.textContent = totalItems;
-            cartCountElement.style.display = totalItems > 0 ? 'inline-block' : 'none';
-        }
-    }
 
-    document.addEventListener("DOMContentLoaded", () => {
         const productGrid = document.getElementById('product-grid');
         const categoryFiltersContainer = document.getElementById('category-filters');
         const minPriceInput = document.getElementById('min-price');
@@ -177,6 +137,7 @@
         const itemsPerPage = 9;
         let currentFilteredAndSortedProducts = [];
 
+        // Hàm renderProducts không thay đổi, nó sẽ sử dụng ID đúng từ `allProducts`
         function renderProducts() {
             const startIndex = (currentPage - 1) * itemsPerPage;
             const endIndex = startIndex + itemsPerPage;
@@ -190,15 +151,15 @@
             } else {
                 noProductMessage.classList.add('hidden');
                 productGrid.innerHTML = paginatedItems.map(p => {
-                     const productInfoJSON = JSON.stringify({ id: p.id, name: p.name, price: p.priceTiers[0].price, img: p.img || './images/placeholder.png', type: p.type });
+                    const productInfoJSON = JSON.stringify({ id: p.id, name: p.name, price: p.price, img: p.img || './images/placeholder.png' });
                     return `
                         <div class="bg-white rounded-xl shadow hover:shadow-xl transition p-4 flex flex-col product-card">
                             <a href="product-detail.html?id=${p.id}" class="block overflow-hidden rounded-lg mb-4">
-                                <img src="${p.img}" alt="${p.name}" class="w-full h-40 object-cover transform hover:scale-110 transition-transform duration-300">
+                                <img src="${p.img || './images/placeholder.png'}" alt="${p.name}" class="w-full h-40 object-cover transform hover:scale-110 transition-transform duration-300">
                             </a>
                             <div class="flex-grow">
                                 <h3 class="text-lg font-semibold text-gray-800 h-14">${p.name}</h3>
-                                <p class="text-sm text-gray-500">${p.category}</p>
+                                <p class="text-sm text-gray-500">${p.categoryName}</p>
                                 <p class="text-blue-600 font-bold mt-2">${p.price.toLocaleString('vi-VN')}đ</p>
                             </div>
                             <div class="mt-4 flex gap-2">
@@ -219,10 +180,8 @@
             let paginationHTML = `<button class="pagination-btn ${currentPage === 1 ? 'disabled' : ''}" onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>«</button>`;
             
             let startPage, endPage;
-            if (totalPages <= 5) {
-                startPage = 1;
-                endPage = totalPages;
-            } else {
+            if (totalPages <= 5) { startPage = 1; endPage = totalPages; } 
+            else {
                 if (currentPage <= 3) { startPage = 1; endPage = 5; }
                 else if (currentPage + 2 >= totalPages) { startPage = totalPages - 4; endPage = totalPages; }
                 else { startPage = currentPage - 2; endPage = currentPage + 2; }
@@ -244,11 +203,11 @@
         }
 
         function setupCategoryFilters() {
-            const categories = [...new Set(allProducts.map(p => p.category))].sort();
-            categoryFiltersContainer.innerHTML = categories.map(cat => `
+            // Sử dụng allCategories lấy từ localStorage
+            categoryFiltersContainer.innerHTML = allCategories.map(cat => `
                 <label class="flex items-center">
-                    <input type="checkbox" value="${cat}" class="category-checkbox h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-                    <span class="ml-2 text-sm text-gray-700">${cat}</span>
+                    <input type="checkbox" value="${cat.name}" data-category-id="${cat.id}" class="category-checkbox h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                    <span class="ml-2 text-sm text-gray-700">${cat.name}</span>
                 </label>
             `).join('');
         }
@@ -263,13 +222,12 @@
                 const lowerCaseQuery = query.toLowerCase().trim();
                 processedProducts = allProducts.filter(p => 
                     p.name.toLowerCase().includes(lowerCaseQuery) ||
-                    p.category.toLowerCase().includes(lowerCaseQuery) ||
-                    p.mainCategory.toLowerCase().includes(lowerCaseQuery)
+                    p.categoryName.toLowerCase().includes(lowerCaseQuery)
                 );
             } else {
-                const checkedCategories = Array.from(document.querySelectorAll('.category-checkbox:checked')).map(cb => cb.value);
-                if (checkedCategories.length > 0) {
-                    processedProducts = processedProducts.filter(p => checkedCategories.includes(p.category));
+                const checkedCategoryIds = Array.from(document.querySelectorAll('.category-checkbox:checked')).map(cb => cb.dataset.categoryId);
+                if (checkedCategoryIds.length > 0) {
+                    processedProducts = processedProducts.filter(p => checkedCategoryIds.includes(p.categoryId));
                 }
                 
                 const minPrice = parseFloat(minPriceInput.value) || 0;
@@ -301,11 +259,11 @@
                 mainTitleEl.innerHTML = `Kết quả tìm kiếm cho: "<strong class="text-blue-600">${query}</strong>"`;
                 subTitleEl.style.display = 'none';
             } else if (typeParam) {
-                const categoryObject = productCatalog.flatMap(mc => mc.subCategories).find(sc => sc.type === typeParam);
+                const categoryObject = allCategories.find(c => c.id === typeParam);
                 if (categoryObject) {
-                    mainTitleEl.textContent = categoryObject.title;
+                    mainTitleEl.textContent = categoryObject.name;
                     subTitleEl.style.display = 'none';
-                    const correspondingCheckbox = document.querySelector(`.category-checkbox[value="${categoryObject.title}"]`);
+                    const correspondingCheckbox = document.querySelector(`.category-checkbox[data-category-id="${typeParam}"]`);
                     if(correspondingCheckbox) correspondingCheckbox.checked = true;
                 }
             }
@@ -339,6 +297,37 @@
             });
         });
         priceFilterBtn.addEventListener('click', applyFiltersAndSort);
+        
+        // Các hàm không thay đổi
+        function addToCart(product) {
+            const user = JSON.parse(localStorage.getItem('loggedInUser'));
+            if (!user) {
+                if (confirm('Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.')) window.location.href = 'login.html';
+                return;
+            }
+            const userCartKey = `cart_${user.email}`;
+            let cart = JSON.parse(localStorage.getItem(userCartKey)) || [];
+            const existingItemIndex = cart.findIndex(item => item.id === product.id);
+            if (existingItemIndex > -1) { cart[existingItemIndex].quantity += 1; } 
+            else { product.quantity = 1; cart.push(product); }
+            localStorage.setItem(userCartKey, JSON.stringify(cart));
+            alert(`Đã thêm "${product.name}" vào giỏ hàng!`);
+            updateCartIconCount();
+        }
+        window.addToCart = addToCart; // Make it globally accessible
+
+        function updateCartIconCount() {
+            const user = JSON.parse(localStorage.getItem('loggedInUser'));
+            if (!user) { document.getElementById('cart-count').style.display = 'none'; return; }
+            const userCartKey = `cart_${user.email}`;
+            const cart = JSON.parse(localStorage.getItem(userCartKey)) || [];
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const cartCountElement = document.getElementById('cart-count');
+            if (cartCountElement) {
+                cartCountElement.textContent = totalItems;
+                cartCountElement.style.display = totalItems > 0 ? 'inline-block' : 'none';
+            }
+        }
 
         updateCartIconCount();
         initializePage();
