@@ -168,7 +168,7 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // ===== BẮT ĐẦU VÙNG SỬA =====
+        // ===== BẮT ĐẦU VÙNG SỬA QUAN TRỌNG =====
         const menuData = [
             { title: "LINH KIỆN BÁN DẪN", sub: [ { name: "Transistor BJT", type: "transistor-bjt" }, { name: "MOSFET", type: "mosfet" }, { name: "IGBT", type: "igbt" } ] },
             { title: "CẢM BIẾN", sub: [ { name: "Cảm biến nhiệt độ", type: "cam-bien-nhiet-do" }, { name: "Cảm biến chuyển động (PIR)", type: "cam-bien-pir" }, { name: "Cảm biến màu sắc", type: "cam-bien-mau-sac" } ] },
@@ -177,7 +177,6 @@
             { title: "ĐIỆN TRỞ", sub: [ { name: "Resistors SMD 0603", type: "resistor-0603" }, { name: "Điện trở 3W", type: "resistor-3w" } ] },
             { title: "TỤ ĐIỆN", sub: [ { name: "Tụ điện", type: "tu-dien" }, { name: "Tụ điện SMD", type: "tu-dien-smd" } ] },
         ];
-        // ===== KẾT THÚC VÙNG SỬA =====
 
         window.addToCart = function(product) {
             const user = JSON.parse(localStorage.getItem('loggedInUser'));
@@ -223,6 +222,44 @@
             if (confirm('Bạn có chắc chắn muốn đăng xuất?')) {
                 localStorage.removeItem('loggedInUser');
                 window.location.reload(); 
+            }
+        }
+        
+        function checkUserStatusAndApplyRestrictions() {
+            const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+            if (loggedInUser && loggedInUser.status === 'inactive') {
+                if (!document.getElementById('account-locked-banner')) {
+                    const banner = document.createElement('div');
+                    banner.id = 'account-locked-banner';
+                    banner.className = 'fixed top-0 left-0 w-full bg-red-600 text-white p-3 text-center z-[100] shadow-lg';
+                    banner.innerHTML = `<strong>Tài khoản của bạn đã bị tạm khóa.</strong> Mọi chức năng mua sắm đã bị hạn chế. Vui lòng <a href="contact.html" class="underline font-bold">liên hệ hỗ trợ</a>.`;
+                    document.body.prepend(banner);
+                    document.querySelector('header').style.marginTop = `${banner.offsetHeight}px`;
+                }
+                document.querySelectorAll('button[onclick*="addToCart"]').forEach(button => {
+                    button.disabled = true;
+                    button.classList.add('opacity-50', 'cursor-not-allowed');
+                    button.title = "Tài khoản bị khóa.";
+                });
+
+                const restrictedLinks = ['cart.html', 'my-orders.html', 'checkout.html', 'product.html', 'product-detail.html', 'profile.html', 'wishlist.html', 'reviews.html'];
+                
+                document.querySelectorAll('a').forEach(link => {
+                    const href = link.getAttribute('href');
+                    if (href && restrictedLinks.some(r => href.startsWith(r))) {
+                        link.onclick = e => { e.preventDefault(); alert('Tài khoản bị khóa, không thể truy cập chức năng này.'); };
+                        link.classList.add('opacity-50', 'cursor-not-allowed');
+                    }
+                });
+                document.querySelectorAll('form[action="product.html"] input').forEach(input => {
+                    input.disabled = true;
+                    input.placeholder = "Tài khoản bị khóa";
+                    const form = input.closest('form');
+                    if (form) {
+                        form.classList.add('opacity-50', 'cursor-not-allowed');
+                        form.onsubmit = (e) => e.preventDefault();
+                    }
+                });
             }
         }
         
@@ -311,6 +348,7 @@
         // --- GỌI TẤT CẢ CÁC HÀM KHI TẢI TRANG ---
         setupUI();
         updateCartIconCount();
+        checkUserStatusAndApplyRestrictions(); // Thêm lại hàm bị thiếu
         
         const heroImg = document.getElementById('heroImage');
         if (heroImg) {
